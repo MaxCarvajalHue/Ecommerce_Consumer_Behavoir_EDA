@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="generator" content="pandoc" />
+
+        <meta name="author" content="Maximiliano Carvajal Huesca" />
+    
+        <meta name="date" content="2025-03-10" />
+    
+    <title>ConsumerBehavoirEDA</title>
+
+        <script src="libs/header-attrs-2.29/header-attrs.js"></script>
+        <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link href="libs/bootstrap-3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+        <script src="libs/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+        <script src="libs/navigation-1.1/tabsets.js"></script>
+        <script src="libs/navigation-1.1/codefolding.js"></script>
+        <script src="libs/navigation-1.1/FileSaver.min.js"></script>
+        <script src="libs/navigation-1.1/sourceembed.js"></script>
+        <link href="libs/downcute-0.1/downcute.css" rel="stylesheet" />
+        <link href="libs/downcute-0.1/downcute_fonts_embed.css" rel="stylesheet" />
+        <script src="libs/downcute-0.1/downcute_styles.js"></script>
+        <script src="libs/downcute-0.1/downcute.js"></script>
+        <script src="libs/prism-1.22/prism.js"></script>
+    
+    
+    
+    
+    <!-- tabsets -->
+    <script>
+      $(document).ready(function () {
+	  window.buildTabsets("toc");
+      });
+      $(document).ready(function () {
+	  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+	      $(this).parent().toggleClass('nav-tabs-open')
+	  });
+      });
+    </script>
+
+    <!-- code folding -->
+        <script>
+      $(document).ready(function () {
+	  	  window.initializeSourceEmbed("Ecommerce_EDA.Rmd");
+	  	        });
+    </script>
+    
+    <!-- code download -->
+        <style>
+      #rmd-source-code {
+	  display: none;
+      }
+    </style>
+    
+    <!-- tabsets dropdown -->
+
+    <style type="text/css">
+      .tabset-dropdown > .nav-tabs {
+	  display: inline-table;
+	  max-height: 500px;
+	  min-height: 44px;
+	  overflow-y: auto;
+	  background: white;
+	  border: 1px solid #ddd;
+	  border-radius: 4px;
+      }
+      
+      .tabset-dropdown > .nav-tabs > li.active:before {
+	  content: "";
+	  font-family: 'Glyphicons Halflings';
+	  display: inline-block;
+	  padding: 10px;
+	  border-right: 1px solid #ddd;
+      }
+      
+      .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+	  content: "&#xe258;";
+	  border: none;
+      }
+      
+      .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+	  content: "";
+	  font-family: 'Glyphicons Halflings';
+	  display: inline-block;
+	  padding: 10px;
+	  border-right: 1px solid #ddd;
+      }
+      
+      .tabset-dropdown > .nav-tabs > li.active {
+	  display: block;
+      }
+
+      .tabset-dropdown > .nav-tabs > li.active a {
+  	  padding: 0 15px !important;
+      }
+
+      .tabset-dropdown > .nav-tabs > li > a,
+      .tabset-dropdown > .nav-tabs > li > a:focus,
+      .tabset-dropdown > .nav-tabs > li > a:hover {
+	  border: none;
+	  display: inline-block;
+	  border-radius: 4px;
+	  background-color: transparent;
+      }
+      
+      .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+	  display: block;
+	  float: none;
+      }
+      
+      .tabset-dropdown > .nav-tabs > li {
+	  display: none;
+	  margin-left: 0 !important;
+      }
+    </style>
+    
+</head>
+
+<body class="preload">
+
+   	
+               <!-- downcute start -->   
+   <div id="docute" class="Root theme-default">
+     <div class="Page layout-narrow">
+      <div class="Wrap">
+        <div class="Sidebar">
+          <div class="SidebarItems" id="toc">
+            <ul>
+            <li><a href="#briefing" id="toc-briefing">Briefing</a></li>
+            <li><a href="#set-up" id="toc-set-up">Set Up</a></li>
+            <li><a href="#data-cleaning-preparation"
+            id="toc-data-cleaning-preparation">Data cleaning &amp;
+            preparation</a></li>
+            <li><a href="#data-visualization"
+            id="toc-data-visualization">Data Visualization</a></li>
+            <li><a href="#conclussions"
+            id="toc-conclussions">Conclussions</a></li>
+            </ul>
+          </div>
+          <div data-position="sidebar:post-end" class="InjectedComponents"><div class="dark-theme-toggler"><div class="toggle checked"><div class="toggle-track"><div class="toggle-track-check"><img  src="data:image/png;base64,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" role="presentation" style="pointer-events: none;" width="16" height="16"></div> <div class="toggle-track-x"><img src="data:image/png;base64,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" role="presentation" style="pointer-events: none;" width="16" height="16"></div></div> <div class="toggle-thumb"></div></div> <input type="checkbox" aria-label="Switch between Dark and Default theme" class="toggler-screen-reader-only"></div></div>
+        </div>
+        <div class="Main">
+          <div class="Content" id="content"> 
+   
+      <div class="btn-group pull-right">
+     <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+     <ul class="dropdown-menu" style="min-width: 50px;">
+	    	    	    <li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+	         </ul>
+   </div>
+   
+        
+      <h1 class="title">ConsumerBehavoirEDA</h1>
+      
+      <p class="authors">
+           <span class="glyphicon glyphicon-user"></span> Maximiliano
+Carvajal Huesca
+      </p>
+         <p class="date"><span class="glyphicon glyphicon-calendar"></span> 2025-03-10</p>
+           
+
+   
+      
+   
+<!-- Don't indent these lines or it will mess pre blocks indentation --> 
+<div class="page-content has-page-title">
+<style type="text/css">
+<style>
+p {
+  text-align: justify;
+}
+</style>
+</style>
+<div id="briefing" class="section level2">
+<h2>Briefing</h2>
+<p><img
+src="https://www.sappiencia.com/images/ecommerce-management-sappiencia.gif" /></p>
+<p>The CEO of our new eCommerce company hired us to design a new
+<strong>ad</strong> <strong>strategy</strong> that would generate the
+maximum income for the company. Hence, our goal is to identify the most
+profitable customer targets and determine which products we should show
+them in order to achieve the highest possible conversion rate. They
+provided us with this dataset containing information about customer
+demographics and their purchase behavior. This is a wealth of valuable
+data available in most eCommerce platforms thanks to account
+registrations. Let’s see how we can design a great <strong>ad campaign
+using data analysis and business intelligence!</strong></p>
+</div>
+<div id="set-up" class="section level2">
+<h2>Set Up</h2>
+<div id="installing-packages" class="section level3">
+<h3>Installing Packages</h3>
+<pre class="r"><code># Execute this chunck just in case the libraries do not load properly
+#install.packages(&quot;readr&quot;)
+#install.packages(&quot;Rtools&quot;)
+#install.packages(&quot;dplyr&quot;)
+#install.packages(&quot;ggplot2&quot;)
+#install.packages(&quot;scales&quot;)
+#install.packages(&quot;sqldf&quot;)
+#install.packages(&quot;hrbrthemes&quot;)
+#install.packages(&quot;extrafont&quot;)
+#install.packages(&quot;rmdformats&quot;)
+#install.packages(&quot;RColorBrewer&quot;)
+#Install.packages(&quot;lubridate&quot;)</code></pre>
+<pre class="r"><code>library(readr)
+library(dplyr)
+library(ggplot2)
+library(scales)
+library(sqldf)
+library(stats)
+library(randomForest)
+library(RColorBrewer)
+library(lubridate)</code></pre>
+</div>
+<div id="import-dataset" class="section level3">
+<h3>Import Dataset</h3>
+<pre class="r"><code>#Make sure you change &#39;Data.csv&#39; for the proper location of the dataset in your repository
+Data &lt;- read_csv(&quot;Data.csv&quot;)
+
+#You can download dataset from: https://www.kaggle.com/datasets/salahuddinahmedshuvo/ecommerce-consumer-behavior-analysis-data
+
+#Credits to: Salahuddin Ahmed : https://www.kaggle.com/salahuddinahmedshuvo Thank You for this great Dataset!</code></pre>
+</div>
+<div id="check-the-database-upload" class="section level3">
+<h3>Check The Database Upload</h3>
+<pre class="r"><code>#Let&#39;s see how the dataset looks!
+head(Data)</code></pre>
+<pre><code>## # A tibble: 6 × 28
+##   Customer_ID   Age Gender Income_Level Marital_Status Education_Level
+##   &lt;chr&gt;       &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;        &lt;chr&gt;          &lt;chr&gt;          
+## 1 37-611-6911    22 Female Middle       Married        Bachelor&#39;s     
+## 2 29-392-9296    49 Male   High         Married        High School    
+## 3 84-649-5117    24 Female Middle       Single         Master&#39;s       
+## 4 48-980-6078    29 Female Middle       Single         Master&#39;s       
+## 5 91-170-9072    33 Female Middle       Widowed        High School    
+## 6 82-561-4233    45 Male   Middle       Married        Master&#39;s       
+## # ℹ 22 more variables: Occupation &lt;chr&gt;, Location &lt;chr&gt;,
+## #   Purchase_Category &lt;chr&gt;, Purchase_Amount &lt;chr&gt;,
+## #   Frequency_of_Purchase &lt;dbl&gt;, Purchase_Channel &lt;chr&gt;, Brand_Loyalty &lt;dbl&gt;,
+## #   Product_Rating &lt;dbl&gt;, `Time_Spent_on_Product_Research(hours)` &lt;dbl&gt;,
+## #   Social_Media_Influence &lt;chr&gt;, Discount_Sensitivity &lt;chr&gt;,
+## #   Return_Rate &lt;dbl&gt;, Customer_Satisfaction &lt;dbl&gt;, Engagement_with_Ads &lt;chr&gt;,
+## #   Device_Used_for_Shopping &lt;chr&gt;, Payment_Method &lt;chr&gt;, …</code></pre>
+</div>
+</div>
+<div id="data-cleaning-preparation" class="section level2">
+<h2>Data cleaning &amp; preparation</h2>
+<p>The dataset has loaded correctly. We can see that it contains 28
+columns, many of which have different data types. However, they are not
+correctly identified by R, which may make it difficult for us to obtain
+statistics and other insights from the data. Therefore, we will fix
+this.</p>
+<pre class="r"><code>#We might use Customer_ID for grouping later, therefore, we have to make it a factor variable, the other variables are logic to convert to their corresponding Data Type
+
+Data2 &lt;- Data %&gt;%
+  mutate(
+    Customer_ID = as.character(Customer_ID),  # ID is usually a character to preserve leading zeros
+    Age = as.integer(Age),  # Age is a whole number
+    Gender = as.factor(Gender),  # Gender is categorical
+    Income_Level = as.factor(Income_Level),  # Income categories (e.g., Low, Medium, High)
+    Marital_Status = as.factor(Marital_Status),  # Categorical (Single, Married, etc.)
+    Education_Level = as.factor(Education_Level),  # Categorical
+    Occupation = as.factor(Occupation),  # Categorical
+    Location = as.factor(Location),  # Categorical (City/Region)
+    Purchase_Category = as.factor(Purchase_Category),  # Categorical
+    Purchase_Amount = as.numeric(Purchase_Amount),  # Numeric (money amount)
+    Frequency_of_Purchase = as.integer(Frequency_of_Purchase),  # Whole number (e.g., times per month)
+    Purchase_Channel = as.factor(Purchase_Channel),  # Categorical (Online, In-Store, etc.)
+    Brand_Loyalty = as.numeric(Brand_Loyalty),  # likert scale 1-5
+    Product_Rating = as.numeric(Product_Rating),  # Numeric (1-5 stars)
+    `Time_Spent_on_Product_Research(hours)` = as.numeric(`Time_Spent_on_Product_Research(hours)`),  # Numeric
+    Social_Media_Influence = as.factor(Social_Media_Influence),  # Categorical (e.g., High, Medium, Low)
+    Discount_Sensitivity = as.factor(Discount_Sensitivity),  # Categorical
+    Return_Rate = as.numeric(Return_Rate),  # Numeric (percentage or count)
+    Customer_Satisfaction = as.numeric(Customer_Satisfaction),  # Numeric (1-10 scale)
+    Engagement_with_Ads = as.factor(Engagement_with_Ads),  # Categorical
+    Device_Used_for_Shopping = as.factor(Device_Used_for_Shopping),  # Categorical
+    Payment_Method = as.factor(Payment_Method),  # Categorical (e.g., Credit Card, PayPal)
+    Time_of_Purchase = as.POSIXct(Time_of_Purchase, format=&quot;%m/%d/%Y&quot;),  # Date-Time format
+    Discount_Used = as.logical(Discount_Used),  # Boolean (TRUE/FALSE)
+    Customer_Loyalty_Program_Member = as.logical(Customer_Loyalty_Program_Member),  # Boolean (TRUE/FALSE)
+    Purchase_Intent = as.factor(Purchase_Intent),  # Categorical (e.g., High, Medium, Low)
+    Shipping_Preference = as.factor(Shipping_Preference),  # Categorical
+    Time_to_Decision = as.numeric(Time_to_Decision)  # Numeric (e.g., minutes/hours)
+  )</code></pre>
+<p>Now, lets evaluate how the data set looks like!</p>
+<pre class="r"><code>str(Data2)</code></pre>
+<pre><code>## tibble [1,000 × 28] (S3: tbl_df/tbl/data.frame)
+##  $ Customer_ID                          : chr [1:1000] &quot;37-611-6911&quot; &quot;29-392-9296&quot; &quot;84-649-5117&quot; &quot;48-980-6078&quot; ...
+##  $ Age                                  : int [1:1000] 22 49 24 29 33 45 21 39 24 25 ...
+##  $ Gender                               : Factor w/ 8 levels &quot;Agender&quot;,&quot;Bigender&quot;,..: 3 6 3 3 3 6 3 6 3 2 ...
+##  $ Income_Level                         : Factor w/ 2 levels &quot;High&quot;,&quot;Middle&quot;: 2 1 2 2 2 2 2 2 1 1 ...
+##  $ Marital_Status                       : Factor w/ 4 levels &quot;Divorced&quot;,&quot;Married&quot;,..: 2 2 3 3 4 2 1 3 1 2 ...
+##  $ Education_Level                      : Factor w/ 3 levels &quot;Bachelor&#39;s&quot;,&quot;High School&quot;,..: 1 2 3 3 2 3 2 2 3 1 ...
+##  $ Occupation                           : Factor w/ 2 levels &quot;High&quot;,&quot;Middle&quot;: 2 1 1 2 2 1 2 2 2 1 ...
+##  $ Location                             : Factor w/ 969 levels &quot;‘Arad&quot;,&quot;‘Aşīrah ash Shamālīyah&quot;,..: 202 308 310 902 553 89 446 830 249 669 ...
+##  $ Purchase_Category                    : Factor w/ 24 levels &quot;Animal Feed&quot;,..: 10 8 19 14 9 19 9 5 19 22 ...
+##  $ Purchase_Amount                      : num [1:1000] NA NA NA NA NA NA NA NA NA NA ...
+##  $ Frequency_of_Purchase                : int [1:1000] 4 11 2 6 6 8 12 6 8 7 ...
+##  $ Purchase_Channel                     : Factor w/ 3 levels &quot;In-Store&quot;,&quot;Mixed&quot;,..: 2 1 2 2 2 2 3 3 1 3 ...
+##  $ Brand_Loyalty                        : num [1:1000] 5 3 5 3 3 3 2 5 3 2 ...
+##  $ Product_Rating                       : num [1:1000] 5 1 5 1 4 3 5 4 5 5 ...
+##  $ Time_Spent_on_Product_Research(hours): num [1:1000] 2 2 0.3 1 0 0 1 1 0 1 ...
+##  $ Social_Media_Influence               : Factor w/ 4 levels &quot;High&quot;,&quot;Low&quot;,&quot;Medium&quot;,..: 4 3 2 1 3 1 1 2 2 4 ...
+##  $ Discount_Sensitivity                 : Factor w/ 3 levels &quot;Not Sensitive&quot;,..: 2 1 1 2 1 1 2 2 3 2 ...
+##  $ Return_Rate                          : num [1:1000] 1 1 1 0 2 2 0 2 1 1 ...
+##  $ Customer_Satisfaction                : num [1:1000] 7 5 7 1 10 3 9 9 2 5 ...
+##  $ Engagement_with_Ads                  : Factor w/ 4 levels &quot;High&quot;,&quot;Low&quot;,&quot;Medium&quot;,..: 4 1 2 4 4 4 2 4 1 3 ...
+##  $ Device_Used_for_Shopping             : Factor w/ 3 levels &quot;Desktop&quot;,&quot;Smartphone&quot;,..: 3 3 2 2 2 3 1 1 1 3 ...
+##  $ Payment_Method                       : Factor w/ 5 levels &quot;Cash&quot;,&quot;Credit Card&quot;,..: 2 5 3 4 3 3 3 2 1 5 ...
+##  $ Time_of_Purchase                     : POSIXct[1:1000], format: &quot;2024-03-01&quot; &quot;2024-04-16&quot; ...
+##  $ Discount_Used                        : logi [1:1000] TRUE TRUE TRUE TRUE FALSE FALSE ...
+##  $ Customer_Loyalty_Program_Member      : logi [1:1000] FALSE FALSE TRUE TRUE FALSE FALSE ...
+##  $ Purchase_Intent                      : Factor w/ 4 levels &quot;Impulsive&quot;,&quot;Need-based&quot;,..: 2 4 1 2 4 3 2 1 2 2 ...
+##  $ Shipping_Preference                  : Factor w/ 3 levels &quot;Express&quot;,&quot;No Preference&quot;,..: 2 3 2 1 2 2 1 2 3 2 ...
+##  $ Time_to_Decision                     : num [1:1000] 2 6 3 10 4 7 13 13 7 13 ...</code></pre>
+<p>Great! We now have the correct data types for our variables. However,
+there is something that might seem like a problem—the variable
+<strong>“Purchase Amount”</strong> is full of <strong>NA</strong>
+values. These are null values, and it would be a significant issue if
+this variable contained only <strong>NA</strong> values, as it is
+crucial for generating impactful insights. Let’s check if that is the
+case.</p>
+<pre class="r"><code>sum(is.na(Data2$Purchase_Amount))</code></pre>
+<pre><code>## [1] 1000</code></pre>
+<p>As you can see, the entire column is filled with <strong>NA</strong>
+values. This is because the column is written as
+<strong>“$.”</strong>—the currency symbol causes the conversion to
+produce <strong>NA</strong> values since it is not a numeric character.
+Let’s remove the symbol and process the column again.</p>
+<pre class="r"><code>Data2$Purchase_Amount &lt;- gsub(&quot;\\$&quot;, &quot;&quot;, Data$Purchase_Amount)
+Data2$Purchase_Amount &lt;- as.numeric(Data2$Purchase_Amount)
+str(Data2$Purchase_Amount)</code></pre>
+<pre><code>##  num [1:1000] 334 222 426 101 212 ...</code></pre>
+<p>Awesome! Now that our variables have the correct data type let’s take
+a look to the statistics of this data frame.</p>
+<pre class="r"><code>summary(Data2)</code></pre>
+<pre><code>##  Customer_ID             Age               Gender    Income_Level
+##  Length:1000        Min.   :18.0   Female     :452   High  :515  
+##  Class :character   1st Qu.:26.0   Male       :449   Middle:485  
+##  Mode  :character   Median :34.5   Bigender   : 20               
+##                     Mean   :34.3   Agender    : 19               
+##                     3rd Qu.:42.0   Genderfluid: 17               
+##                     Max.   :50.0   Non-binary : 16               
+##                                    (Other)    : 27               
+##   Marital_Status    Education_Level  Occupation       Location  
+##  Divorced:245    Bachelor&#39;s :341    High  :517   Oslo     :  4  
+##  Married :253    High School:331    Middle:483   Créteil  :  3  
+##  Single  :242    Master&#39;s   :328                 Göteborg :  3  
+##  Widowed :260                                    Al Jīzah :  2  
+##                                                  Araci    :  2  
+##                                                  Bronnitsy:  2  
+##                                                  (Other)  :984  
+##              Purchase_Category Purchase_Amount  Frequency_of_Purchase
+##  Electronics          : 54     Min.   : 50.71   Min.   : 2.000       
+##  Sports &amp; Outdoors    : 51     1st Qu.:162.24   1st Qu.: 4.000       
+##  Home Appliances      : 50     Median :276.17   Median : 7.000       
+##  Jewelry &amp; Accessories: 50     Mean   :275.06   Mean   : 6.945       
+##  Toys &amp; Games         : 47     3rd Qu.:388.98   3rd Qu.:10.000       
+##  Animal Feed          : 44     Max.   :498.33   Max.   :12.000       
+##  (Other)              :704                                           
+##  Purchase_Channel Brand_Loyalty   Product_Rating 
+##  In-Store:326     Min.   :1.000   Min.   :1.000  
+##  Mixed   :340     1st Qu.:2.000   1st Qu.:2.000  
+##  Online  :334     Median :3.000   Median :3.000  
+##                   Mean   :3.026   Mean   :3.033  
+##                   3rd Qu.:4.000   3rd Qu.:4.000  
+##                   Max.   :5.000   Max.   :5.000  
+##                                                  
+##  Time_Spent_on_Product_Research(hours) Social_Media_Influence
+##  Min.   :0.000                         High  :268            
+##  1st Qu.:0.000                         Low   :249            
+##  Median :1.000                         Medium:236            
+##  Mean   :1.013                         None  :247            
+##  3rd Qu.:2.000                                               
+##  Max.   :2.000                                               
+##                                                              
+##          Discount_Sensitivity  Return_Rate    Customer_Satisfaction
+##  Not Sensitive     :331       Min.   :0.000   Min.   : 1.000       
+##  Somewhat Sensitive:319       1st Qu.:0.000   1st Qu.: 3.000       
+##  Very Sensitive    :350       Median :1.000   Median : 5.000       
+##                               Mean   :0.954   Mean   : 5.399       
+##                               3rd Qu.:2.000   3rd Qu.: 8.000       
+##                               Max.   :2.000   Max.   :10.000       
+##                                                                    
+##  Engagement_with_Ads Device_Used_for_Shopping     Payment_Method
+##  High  :270          Desktop   :350           Cash       :187   
+##  Low   :230          Smartphone:311           Credit Card:194   
+##  Medium:244          Tablet    :339           Debit Card :196   
+##  None  :256                                   Other      :204   
+##                                               PayPal     :219   
+##                                                                 
+##                                                                 
+##  Time_of_Purchase                Discount_Used  
+##  Min.   :2024-01-01 00:00:00.0   Mode :logical  
+##  1st Qu.:2024-04-04 00:00:00.0   FALSE:479      
+##  Median :2024-06-30 00:00:00.0   TRUE :521      
+##  Mean   :2024-06-29 06:31:40.7                  
+##  3rd Qu.:2024-09-19 00:00:00.0                  
+##  Max.   :2024-12-30 00:00:00.0                  
+##                                                 
+##  Customer_Loyalty_Program_Member    Purchase_Intent    Shipping_Preference
+##  Mode :logical                   Impulsive  :248    Express      :294     
+##  FALSE:509                       Need-based :256    No Preference:372     
+##  TRUE :491                       Planned    :247    Standard     :334     
+##                                  Wants-based:249                          
+##                                                                           
+##                                                                           
+##                                                                           
+##  Time_to_Decision
+##  Min.   : 1.000  
+##  1st Qu.: 4.000  
+##  Median : 8.000  
+##  Mean   : 7.547  
+##  3rd Qu.:11.000  
+##  Max.   :14.000  
+## </code></pre>
+<p>Wow! This is great. From the summary of the dataset, we can start
+uncovering meaningful insights about the business we are working with.
+For example:</p>
+<ul>
+<li><p>First, the database appears to be well-balanced in terms of
+income levels, marital status, and purchase categories.</p></li>
+<li><p>We also notice that the company seems to be focusing more on one
+gender, possibly due to a gender inclusion update in their
+values.</p></li>
+<li><p>Additionally, most customers purchase through mixed channels,
+meaning the majority shop both online and in-store.</p></li>
+<li><p>The majority of payments are made using PayPal.</p></li>
+<li><p>Most clients are highly sensitive to discounts; however, at the
+same time, they do not belong to the customer loyalty program.</p></li>
+</ul>
+</div>
+<div id="data-visualization" class="section level2">
+<h2>Data Visualization</h2>
+<p>We’ve already discovered some insights about the company’s clients
+and their behavior. However, we need more information to propose an ad
+strategy that will be worth the investment. Let’s create some
+cross-visualizations to uncover deeper insights from our data.</p>
+<p>First, I would really like to determine which channel generates more
+revenue. Since running a physical store is more expensive than
+maintaining a website, the expectation would be that the store generates
+more income.</p>
+<pre class="r"><code># Let&#39;s take advantage of sqldf function and create a dataset for this plot using SQL
+sales_per_channel &lt;- sqldf(
+&quot;SELECT `Purchase_Channel`, SUM(`Purchase_Amount`) AS sales_tot
+ FROM Data2
+  GROUP BY `Purchase_Channel`
+  ORDER BY sales_tot DESC&quot;)
+
+# Bar Plot
+plot_channel_sales &lt;- ggplot(sales_per_channel, aes(x = reorder(`Purchase_Channel`, sales_tot), y = sales_tot, fill = `Purchase_Channel`)) +
+  geom_bar(stat = &quot;identity&quot;) +
+  coord_flip() +  
+  labs(title = &quot;Total sales by Purchase Channel&quot;,
+       x = &quot;Purchase Channel&quot;,
+       y = &quot;Purchase Volume&quot;) +
+  theme(
+    panel.background = element_rect(fill = &quot;gray20&quot;, color = &quot;black&quot;), 
+    plot.background = element_rect(fill = &quot;gray20&quot;), 
+    panel.grid.major = element_line(color = &quot;white&quot;, linetype = &quot;dashed&quot;),  
+    panel.grid.minor = element_line(color = &quot;white&quot;, linetype = &quot;dashed&quot;),  
+    axis.text = element_text(color = &quot;white&quot;),  
+    axis.title = element_text(color = &quot;white&quot;), 
+    plot.title = element_text(color = &quot;white&quot;, hjust = 0.5, face = &quot;bold&quot;),  
+    legend.background = element_rect(fill = &quot;gray20&quot;, color = &quot;black&quot;), 
+    legend.text = element_text(color = &quot;white&quot;), 
+    legend.title = element_text(color = &quot;white&quot;)) +
+  scale_y_continuous(labels = dollar_format(prefix = &quot;$&quot;))
+
+plot_channel_sales</code></pre>
+<p><img src="Ecommerce_EDA_files/figure-html/unnamed-chunk-7-1.png" width="768" /></p>
+<p>We can clearly see that the channel with the highest traffic is the
+online channel. Given that it is the most popular, with lower costs for
+maintaining a website, and considering the need to create an ad campaign
+to boost sales, we will focus solely on analyzing online sales and
+develop a proposal based on the insights we gather.</p>
+<p>Before moving forward, we need to ensure that this sales volume isn’t
+simply due to a higher number of purchases. Therefore, we will plot the
+number of purchases by channel.</p>
+<pre class="r"><code>ggplot(Data2, aes(x = Purchase_Channel, fill = Purchase_Channel)) +
+  geom_bar() + 
+  labs(title = &quot;Number of Purchases per Channel&quot;,
+       x = &quot;Purchase Channel&quot;,
+       y = &quot;Number of Purchases&quot;) +
+  theme(
+    panel.background = element_rect(fill = &quot;gray20&quot;, color = &quot;black&quot;), 
+    plot.background = element_rect(fill = &quot;gray20&quot;), 
+    panel.grid.major = element_line(color = &quot;white&quot;, linetype = &quot;dashed&quot;),  
+    panel.grid.minor = element_line(color = &quot;white&quot;, linetype = &quot;dashed&quot;),  
+    axis.text = element_text(color = &quot;white&quot;),  
+    axis.title = element_text(color = &quot;white&quot;), 
+    plot.title = element_text(color = &quot;white&quot;, hjust = 0.5, face = &quot;bold&quot;),  
+    legend.background = element_rect(fill = &quot;gray20&quot;, color = &quot;black&quot;), 
+    legend.text = element_text(color = &quot;white&quot;), 
+    legend.title = element_text(color = &quot;white&quot;))</code></pre>
+<p><img src="Ecommerce_EDA_files/figure-html/unnamed-chunk-8-1.png" width="768" /></p>
+<p>Great, we can see that the number of sales per channel is fairly
+balanced, with a difference of only 8 sales, which is barely a 2%
+difference. Given the size of the dataset, this difference is not
+significant, so we will proceed with our analysis. From now on, we will
+focus solely on the Online channel, as running ads for the website will
+be easier for the marketing team, and it will also make the analysis
+more straightforward. Let’s create a new dataset using the channel
+filter.</p>
+<pre class="r"><code># Filter only Online Channel orders
+online_orders &lt;- Data2 %&gt;%
+  filter(Purchase_Channel == &quot;Online&quot;)</code></pre>
+<p>Now let’s see which category brings more income focusing in the
+online channel</p>
+<pre class="r"><code># Plot 1: Total Purchase Amount per Category
+plot_revenue &lt;- ggplot(online_orders, aes(x = reorder(Purchase_Category, Purchase_Amount, sum), y = Purchase_Amount, fill = Purchase_Category)) +
+  geom_bar(stat = &quot;identity&quot;) +
+  labs(title = &quot;Total Purchase Amount by Category (Online)&quot;,
+       x = &quot;Purchase Category&quot;,
+       y = &quot;Total Purchase Amount&quot;) +
+  theme_minimal()
+
+# Plot 2: Number of Purchases per Category
+plot_popularity &lt;- ggplot(online_orders, aes(x = Purchase_Category, fill = Purchase_Category)) +
+  geom_bar() +
+  labs(title = &quot;Number of Purchases by Category (Online)&quot;,
+       x = &quot;Purchase Category&quot;,
+       y = &quot;Number of Purchases&quot;) +
+  theme_minimal()
+
+plot_revenue</code></pre>
+<p><img src="Ecommerce_EDA_files/figure-html/unnamed-chunk-10-1.png" width="768" /></p>
+<pre class="r"><code>plot_popularity</code></pre>
+<p><img src="Ecommerce_EDA_files/figure-html/unnamed-chunk-10-2.png" width="768" /></p>
+<p>Oh no! This looks pretty cluttered with so many categories, and we’re
+not able to extract any useful insights from it. Let’s narrow it down by
+filtering the top 5 categories, so we can gain better insights. We’ll
+also plot them separately.</p>
+<pre class="r"><code># Get the top 5 categories by number of purchases
+top5_popularity &lt;- online_orders %&gt;%
+  count(Purchase_Category, name = &quot;num_purchases&quot;) %&gt;%
+  arrange(desc(num_purchases)) %&gt;%
+  slice_head(n = 5)  # Select top 5
+
+# Top 5 Categories by Number of Purchases
+plot_Cat_popularity &lt;- ggplot(top5_popularity, aes(x = reorder(Purchase_Category, num_purchases), y = num_purchases, fill = Purchase_Category)) +
+  geom_bar(stat = &quot;identity&quot;) +
+  coord_flip() +
+  labs(title = &quot;Top 5 Categories by Popularity (Online)&quot;,
+       x = &quot;Purchase Category&quot;,
+       y = &quot;Number of Purchases&quot;) +
+  theme(
+    panel.background = element_rect(fill = &quot;gray20&quot;, color = &quot;black&quot;), 
+    plot.background = element_rect(fill = &quot;gray20&quot;), 
+    panel.grid.major = element_line(color = &quot;white&quot;, linetype = &quot;dashed&quot;),  
+    panel.grid.minor = element_line(color = &quot;white&quot;, linetype = &quot;dashed&quot;),  
+    axis.text = element_text(color = &quot;white&quot;),  
+    axis.title = element_text(color = &quot;white&quot;), 
+    plot.title = element_text(color = &quot;white&quot;, hjust = 0.5, face = &quot;bold&quot;),  
+    legend.background = element_rect(fill = &quot;gray20&quot;, color = &quot;black&quot;), 
+    legend.text = element_text(color = &quot;white&quot;), 
+    legend.title = element_text(color = &quot;white&quot;))
+
+plot_Cat_popularity</code></pre>
+<p><img src="Ecommerce_EDA_files/figure-html/unnamed-chunk-11-1.png" width="768" /></p>
+<pre class="r"><code># Get the top 5 categories by revenue of purchases
+top5_revenue &lt;- online_orders %&gt;%
+  group_by(Purchase_Category) %&gt;%
+  summarise(total_revenue = sum(Purchase_Amount)) %&gt;%
+  arrange(desc(total_revenue)) %&gt;%
+  slice_head(n = 5)  # Select top 5
+
+# Plot: Top 5 Categories by Revenue
+plot_Cat_revenue &lt;- ggplot(top5_revenue, aes(x = reorder(Purchase_Category, total_revenue), y = total_revenue, fill = Purchase_Category)) +
+  geom_bar(stat = &quot;identity&quot;) +
+  coord_flip() +
+  labs(title = &quot;Top 5 Categories by Revenue (Online)&quot;,
+       x = &quot;Purchase Category&quot;,
+       y = &quot;Total Purchase Amount&quot;) +
+  theme(
+    panel.background = element_rect(fill = &quot;gray20&quot;, color = &quot;black&quot;), 
+    plot.background = element_rect(fill = &quot;gray20&quot;), 
+    panel.grid.major = element_line(color = &quot;white&quot;, linetype = &quot;dashed&quot;),  
+    panel.grid.minor = element_line(color = &quot;white&quot;, linetype = &quot;dashed&quot;),  
+    axis.text = element_text(color = &quot;white&quot;),  
+    axis.title = element_text(color = &quot;white&quot;), 
+    plot.title = element_text(color = &quot;white&quot;, hjust = 0.5, face = &quot;bold&quot;),  
+    legend.background = element_rect(fill = &quot;gray20&quot;, color = &quot;black&quot;), 
+    legend.text = element_text(color = &quot;white&quot;), 
+    legend.title = element_text(color = &quot;white&quot;))
+
+plot_Cat_revenue</code></pre>
+<p><img src="Ecommerce_EDA_files/figure-html/unnamed-chunk-12-1.png" width="768" /></p>
+<p>Very interesting! It’s clear that we have a clear winner: Sports
+&amp; Outdoors. Also, considering that summer is just around the corner,
+running an ad campaign for this product would be a great proposal. Toys
+and Games come in second place in both graphs, which is also promising
+for sales, as kids love summer and will likely be getting new gear to
+play with their friends or at home.</p>
+<p>Next, let’s analyze which gender group is the most profitable for our
+online channel.</p>
+<pre class="r"><code>plot_genderdis_sp &lt;- ggplot(online_orders %&gt;% filter(Purchase_Category == &quot;Sports &amp; Outdoors&quot;), aes(x = Gender, fill = Gender)) +
+  geom_bar() +
+  labs(title = &quot;Gender Distribution of Sports &amp; Outdoors Purchases&quot;,
+       x = &quot;Gender&quot;,
+       y = &quot;Number of Purchases&quot;) +
+  theme(
+    panel.background = element_rect(fill = &quot;gray20&quot;, color = &quot;black&quot;), 
+    plot.background = element_rect(fill = &quot;gray20&quot;), 
+    panel.grid.major = element_line(color = &quot;white&quot;, linetype = &quot;dashed&quot;),  
+    panel.grid.minor = element_line(color = &quot;white&quot;, linetype = &quot;dashed&quot;),  
+    axis.text = element_text(color = &quot;white&quot;),  
+    axis.title = element_text(color = &quot;white&quot;), 
+    plot.title = element_text(color = &quot;white&quot;, hjust = 0.5, face = &quot;bold&quot;),  
+    legend.background = element_rect(fill = &quot;gray20&quot;, color = &quot;black&quot;), 
+    legend.text = element_text(color = &quot;white&quot;), 
+    legend.title = element_text(color = &quot;white&quot;))
+
+plot_genderamnt_sp &lt;- ggplot(online_orders %&gt;% filter(Purchase_Category == &quot;Sports &amp; Outdoors&quot;), aes(x = Gender, y = Purchase_Amount, fill = Gender)) +
+  geom_col() +
+  labs(title = &quot;Gender Distribution of Sales in Sports &amp; Outdoors Purchases by Volume&quot;,
+       x = &quot;Gender&quot;,
+       y = &quot;Volume of Purchases&quot;) +
+  theme(
+    panel.background = element_rect(fill = &quot;gray20&quot;, color = &quot;black&quot;), 
+    plot.background = element_rect(fill = &quot;gray20&quot;), 
+    panel.grid.major = element_line(color = &quot;white&quot;, linetype = &quot;dashed&quot;),  
+    panel.grid.minor = element_line(color = &quot;white&quot;, linetype = &quot;dashed&quot;),  
+    axis.text = element_text(color = &quot;white&quot;),  
+    axis.title = element_text(color = &quot;white&quot;), 
+    plot.title = element_text(color = &quot;white&quot;, hjust = 0.5, face = &quot;bold&quot;),  
+    legend.background = element_rect(fill = &quot;gray20&quot;, color = &quot;black&quot;), 
+    legend.text = element_text(color = &quot;white&quot;), 
+    legend.title = element_text(color = &quot;white&quot;))
+
+plot_genderdis_sp</code></pre>
+<p><img src="Ecommerce_EDA_files/figure-html/unnamed-chunk-13-1.png" width="768" /></p>
+<pre class="r"><code>plot_genderamnt_sp</code></pre>
+<p><img src="Ecommerce_EDA_files/figure-html/unnamed-chunk-13-2.png" width="768" /></p>
+<p>We can clearly see that women make a large number of purchases and
+have the highest purchase volume. However, men make fewer purchases, but
+it seems their average purchase amounts are higher. We will balance the
+dataset by taking an equal number of men and women to evaluate if the
+purchase volume is still higher among women.</p>
+<pre class="r"><code>online_orders_filtered &lt;- online_orders %&gt;%
+  filter(Gender == c(&quot;Male&quot;,&quot;Female&quot;))
+
+# Resumir los montos de compra por género
+gender_summary &lt;- online_orders_filtered %&gt;%
+  group_by(Gender) %&gt;%
+  summarise(Average_Purchase_Amount = mean(Purchase_Amount, na.rm = TRUE),
+            Total_Purchase_Amount = sum(Purchase_Amount, na.rm = TRUE),
+            Purchase_Count = n())
+
+# Mostrar resumen
+print(gender_summary)</code></pre>
+<pre><code>## # A tibble: 2 × 4
+##   Gender Average_Purchase_Amount Total_Purchase_Amount Purchase_Count
+##   &lt;fct&gt;                    &lt;dbl&gt;                 &lt;dbl&gt;          &lt;int&gt;
+## 1 Female                    262.                20145.             77
+## 2 Male                      275.                19285.             70</code></pre>
+<pre class="r"><code># Realizar una prueba t para comparar los montos promedio de compra entre hombres y mujeres
+t_test_result &lt;- t.test(Purchase_Amount ~ Gender, data = online_orders_filtered)
+
+# Ver los resultados de la prueba t
+print(t_test_result)</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  Purchase_Amount by Gender
+## t = -0.65828, df = 144.89, p-value = 0.5114
+## alternative hypothesis: true difference in means between group Female and group Male is not equal to 0
+## 95 percent confidence interval:
+##  -55.51248  27.77352
+## sample estimates:
+## mean in group Female   mean in group Male 
+##             261.6262             275.4957</code></pre>
+<pre class="r"><code># Visualizar la distribución de los montos de compra para hombres y mujeres
+ggplot(online_orders_filtered, aes(x = Gender, y = Purchase_Amount, color = Gender)) +
+  geom_boxplot() +
+  labs(title = &quot;Distribución de los Montos de Compra por Género&quot;,
+       x = &quot;Género&quot;,
+       y = &quot;Monto de Compra&quot;)  +
+  theme(
+    panel.background = element_rect(fill = &quot;gray20&quot;, color = &quot;black&quot;), 
+    plot.background = element_rect(fill = &quot;gray20&quot;), 
+    panel.grid.major = element_line(color = &quot;white&quot;, linetype = &quot;dashed&quot;),  
+    panel.grid.minor = element_line(color = &quot;white&quot;, linetype = &quot;dashed&quot;),  
+    axis.text = element_text(color = &quot;white&quot;),  
+    axis.title = element_text(color = &quot;white&quot;), 
+    plot.title = element_text(color = &quot;white&quot;, hjust = 0.5, face = &quot;bold&quot;),  
+    legend.background = element_rect(fill = &quot;gray20&quot;, color = &quot;black&quot;), 
+    legend.text = element_text(color = &quot;white&quot;), 
+    legend.title = element_text(color = &quot;white&quot;))</code></pre>
+<p><img src="Ecommerce_EDA_files/figure-html/unnamed-chunk-16-1.png" width="768" /></p>
+<p>With the results from the t-test and the box plot, we can see that
+the difference between these two genders is not significant. Therefore,
+focusing the campaign exclusively on men or women would not lead to a
+significant difference compared to the other genders, which have a much
+lower purchase volume.</p>
+<p>The t-test result shows a t-value of -0.65828 with a p-value of
+0.5114, indicating that there is no statistically significant difference
+between the mean purchase amounts for women (261.63) and men (275.50).
+The 95% confidence interval for the difference in means ranges from
+-55.51 to 27.77, which includes 0, further confirming that the
+difference is not statistically significant.</p>
+<p>Now let’s figure out if there’s an impact for the purchase amount if
+we consider the age.</p>
+<pre class="r"><code>plot_agedis_sp &lt;- ggplot(online_orders %&gt;% filter(Purchase_Category == &quot;Sports &amp; Outdoors&quot;), aes(x = Age)) +
+  geom_histogram(binwidth = 5, fill = &quot;Light Green&quot;, color = &quot;Black&quot;) +
+  scale_x_continuous(breaks = seq(0, max(online_orders$Age), by = 5), 
+                     labels = seq(0, max(online_orders$Age), by = 5)) +
+  labs(title = &quot;Age Distribution of Sports &amp; Outdoors Customers&quot;,
+       x = &quot;Age&quot;,
+       y = &quot;Number of Purchases&quot;) +
+  theme(
+    panel.background = element_rect(fill = &quot;gray20&quot;, color = &quot;black&quot;), 
+    plot.background = element_rect(fill = &quot;gray20&quot;), 
+    panel.grid.major = element_line(color = &quot;white&quot;, linetype = &quot;dashed&quot;),  
+    panel.grid.minor = element_line(color = &quot;white&quot;, linetype = &quot;dashed&quot;),  
+    axis.text = element_text(color = &quot;white&quot;),  
+    axis.title = element_text(color = &quot;white&quot;), 
+    plot.title = element_text(color = &quot;white&quot;, hjust = 0.5, face = &quot;bold&quot;),  
+    legend.background = element_rect(fill = &quot;gray20&quot;, color = &quot;black&quot;), 
+    legend.text = element_text(color = &quot;white&quot;), 
+    legend.title = element_text(color = &quot;white&quot;))
+
+plot_agedis_sp</code></pre>
+<p><img src="Ecommerce_EDA_files/figure-html/unnamed-chunk-17-1.png" width="768" /></p>
+<p>As we can see, most of the sales are focused on the age range of 20
+to 30 years, so we can target the ads to this audience, expecting the
+campaign to have a higher conversion rate and the profits from it to be
+greater. Now lets check if the income level has any influence on the
+purchases.</p>
+<pre class="r"><code>plot_income_sp &lt;- ggplot(online_orders %&gt;% filter(Purchase_Category == &quot;Sports &amp; Outdoors&quot;), aes(x = Income_Level, y = Purchase_Amount, fill = Income_Level)) +
+  geom_bar(stat = &quot;identity&quot;) +
+  labs(title = &quot;Income Level vs Purchase Amount for Sports &amp; Outdoors&quot;,
+       x = &quot;Income Level&quot;,
+       y = &quot;Total Purchase Amount&quot;) +
+  theme(
+    panel.background = element_rect(fill = &quot;gray20&quot;, color = &quot;black&quot;), 
+    plot.background = element_rect(fill = &quot;gray20&quot;), 
+    panel.grid.major = element_line(color = &quot;white&quot;, linetype = &quot;dashed&quot;),  
+    panel.grid.minor = element_line(color = &quot;white&quot;, linetype = &quot;dashed&quot;),  
+    axis.text = element_text(color = &quot;white&quot;),  
+    axis.title = element_text(color = &quot;white&quot;), 
+    plot.title = element_text(color = &quot;white&quot;, hjust = 0.5, face = &quot;bold&quot;),  
+    legend.background = element_rect(fill = &quot;gray20&quot;, color = &quot;black&quot;), 
+    legend.text = element_text(color = &quot;white&quot;), 
+    legend.title = element_text(color = &quot;white&quot;)  
+  )
+
+plot_income_sp</code></pre>
+<p><img src="Ecommerce_EDA_files/figure-html/unnamed-chunk-18-1.png" width="768" /></p>
+<p>As expected, the group with higher income has had a higher purchase
+level compared to the middle-income group. Therefore, we can focus a
+campaign on relatively high-priced products and test whether we can sell
+products that lead to a higher purchase ticket.</p>
+<p>Now lets check, do customer are influenced by discounts, let’s see if
+this happens evaluating the Discount sensitivity variable:</p>
+<pre class="r"><code>plot_income_sp &lt;- ggplot(online_orders %&gt;% filter(Purchase_Category == &quot;Sports &amp; Outdoors&quot;), aes(x = Discount_Sensitivity, y = Purchase_Amount, fill = Discount_Sensitivity)) +
+  geom_bar(stat = &quot;identity&quot;) +
+  labs(title = &quot;Discount Sensitivity vs Purchase Amount for Sports &amp; Outdoors&quot;,
+       x = &quot;Discount Sensitivity&quot;,
+       y = &quot;Total Purchase Amount&quot;) +
+  theme(
+    panel.background = element_rect(fill = &quot;gray20&quot;, color = &quot;black&quot;), 
+    plot.background = element_rect(fill = &quot;gray20&quot;), 
+    panel.grid.major = element_line(color = &quot;white&quot;, linetype = &quot;dashed&quot;),  
+    panel.grid.minor = element_line(color = &quot;white&quot;, linetype = &quot;dashed&quot;),  
+    axis.text = element_text(color = &quot;white&quot;),  
+    axis.title = element_text(color = &quot;white&quot;), 
+    plot.title = element_text(color = &quot;white&quot;, hjust = 0.5, face = &quot;bold&quot;),  
+    legend.background = element_rect(fill = &quot;gray20&quot;, color = &quot;black&quot;), 
+    legend.text = element_text(color = &quot;white&quot;), 
+    legend.title = element_text(color = &quot;white&quot;)  
+  )
+
+plot_income_sp</code></pre>
+<p><img src="Ecommerce_EDA_files/figure-html/unnamed-chunk-19-1.png" width="768" /></p>
+<p>As can be seen in the graph, most customers are sensitive to
+discounts. However, we cannot confirm that they actually use them. Let’s
+check if that’s the case.</p>
+<pre class="r"><code>ggplot(online_orders, aes(x = Discount_Sensitivity, fill = Discount_Used)) +
+  geom_bar(position = &quot;stack&quot;) +  # Apilar las barras
+  labs(title = &quot;Distribución del Uso del Descuento por Sensibilidad al Descuento&quot;,
+       x = &quot;Sensibilidad al Descuento&quot;,
+       y = &quot;Número de Compras&quot;) +
+  scale_fill_manual(values = c(&quot;gray&quot;, &quot;darkgreen&quot;)) +  # Opcional: personalizar los colores
+  theme_minimal() +
+  theme(
+    panel.background = element_rect(fill = &quot;gray20&quot;, color = &quot;black&quot;), 
+    plot.background = element_rect(fill = &quot;gray20&quot;), 
+    panel.grid.major = element_line(color = &quot;white&quot;, linetype = &quot;dashed&quot;),  
+    panel.grid.minor = element_line(color = &quot;white&quot;, linetype = &quot;dashed&quot;),  
+    axis.text = element_text(color = &quot;white&quot;),  
+    axis.title = element_text(color = &quot;white&quot;), 
+    plot.title = element_text(color = &quot;white&quot;, hjust = 0.5, face = &quot;bold&quot;),  
+    legend.background = element_rect(fill = &quot;gray20&quot;, color = &quot;black&quot;), 
+    legend.text = element_text(color = &quot;white&quot;), 
+    legend.title = element_text(color = &quot;white&quot;)  
+  )</code></pre>
+<p><img src="Ecommerce_EDA_files/figure-html/unnamed-chunk-20-1.png" width="768" /></p>
+<p>It seems that only customers with a high sensitivity to discounts
+make considerable use of them. This could mean that the store’s
+discounts are attractive, but they are not used as much as expected by
+customers.</p>
+<p>To conclude, it would be very useful to evaluate if there is any
+seasonal trend or peak in sales. This way, we can define two key
+aspects:</p>
+<ol style="list-style-type: decimal">
+<li>If we can take advantage of a normal sales increase by further
+boosting it with ads targeted at a profitable audience.</li>
+<li>To ensure that if there is an increase in sales when the campaign is
+launched, it is due to the campaign itself and not just the normal
+seasonal increase in sales.</li>
+</ol>
+<pre class="r"><code>online_orders &lt;- online_orders %&gt;%
+  mutate(Month = floor_date(Time_of_Purchase, &quot;month&quot;))
+
+monthly_sales &lt;- online_orders %&gt;%
+  group_by(Month) %&gt;%
+  summarise(Total_Purchase_Amount = sum(Purchase_Amount, na.rm = TRUE))
+
+ggplot(monthly_sales, aes(x = Month, y = Total_Purchase_Amount)) +
+  geom_line(color = &quot;white&quot;, linewidth = 1) + 
+  geom_point(color = &quot;red&quot;, size = 4) +
+  labs(title = &quot;Tendencia de Compras a lo Largo del Tiempo&quot;,
+       x = &quot;Fecha (Mes)&quot;,
+       y = &quot;Monto Total de Compras&quot;) +
+  theme(
+    panel.background = element_rect(fill = &quot;gray20&quot;, color = &quot;black&quot;), 
+    plot.background = element_rect(fill = &quot;gray20&quot;), 
+    panel.grid.major = element_line(color = &quot;white&quot;, linetype = &quot;dashed&quot;),  
+    panel.grid.minor = element_line(color = &quot;white&quot;, linetype = &quot;dashed&quot;),  
+    axis.text = element_text(color = &quot;white&quot;),  
+    axis.title = element_text(color = &quot;white&quot;), 
+    plot.title = element_text(color = &quot;white&quot;, hjust = 0.5, face = &quot;bold&quot;),  
+    legend.background = element_rect(fill = &quot;gray20&quot;, color = &quot;black&quot;), 
+    legend.text = element_text(color = &quot;white&quot;), 
+    legend.title = element_text(color = &quot;white&quot;)  
+  )</code></pre>
+<p><img src="Ecommerce_EDA_files/figure-html/unnamed-chunk-21-1.png" width="768" /></p>
+<p>As we can see in the time graph, starting from March and April, there
+is a natural increase in sales in the online store. This could be due to
+the season, and it will be a key point in the analysis when comparing
+the benefits generated by the campaign, since sales will increase
+regardless.</p>
+</div>
+<div id="conclussions" class="section level2">
+<h2>Conclussions</h2>
+</div>
+</div>
+
+   
+      <div id="rmd-source-code">LS0tDQp0aXRsZTogIkNvbnN1bWVyQmVoYXZvaXJFREEiDQphdXRob3I6ICJNYXhpbWlsaWFubyBDYXJ2YWphbCBIdWVzY2EiDQpkYXRlOiAiMjAyNS0wMy0xMCINCm91dHB1dDoNCiAgcm1kZm9ybWF0czo6ZG93bmN1dGU6DQogICAgZGVmYXVsdF9zdHlsZTogImRhcmsiDQogICAgZG93bmN1dGVfdGhlbWU6ICJkZWZhdWx0Ig0KICAgIGNvZGVfZG93bmxvYWQ6IHRydWUNCiAgICBsaWJfZGlyOiBsaWJzDQogICAgc2VsZl9jb250YWluZWQ6IGZhbHNlDQogIGh0bWxfZG9jdW1lbnQ6DQogICAgZGZfcHJpbnQ6IHBhZ2VkDQogICAgZmlnX3dpZHRoOiAxMiAgIyBBanVzdGEgZWwgYW5jaG8gZGUgbGFzIGZpZ3VyYXMNCiAgICBmaWdfaGVpZ2h0OiA2DQogICAgY3NzOiB8DQogICAgICAubWFpbi1jb250YWluZXIgew0KICAgICAgICB3aWR0aDogMTAwJSAhaW1wb3J0YW50Ow0KICAgICAgICBtYXgtd2lkdGg6IG5vbmU7ICAgICAgDQogICAgICAgIHBhZGRpbmctbGVmdDogMiU7ICAgICAgIA0KICAgICAgICBwYWRkaW5nLXJpZ2h0OiAyJTsNCiAgICAgIH0NCiAgICAgIA0KICAgICAgcCwgbGkgeyANCiAgICAgICAgdGV4dC1hbGlnbjoganVzdGlmeTsNCiAgICAgIH0NCi0tLQ0KDQpgYGB7Y3NzLCBlY2hvPUZBTFNFfQ0KPHN0eWxlPg0KcCB7DQogIHRleHQtYWxpZ246IGp1c3RpZnk7DQp9DQo8L3N0eWxlPg0KYGBgDQoNCiMjIEJyaWVmaW5nDQoNCiFbXShodHRwczovL3d3dy5zYXBwaWVuY2lhLmNvbS9pbWFnZXMvZWNvbW1lcmNlLW1hbmFnZW1lbnQtc2FwcGllbmNpYS5naWYpDQoNClRoZSBDRU8gb2Ygb3VyIG5ldyBlQ29tbWVyY2UgY29tcGFueSBoaXJlZCB1cyB0byBkZXNpZ24gYSBuZXcgKiphZCoqICoqc3RyYXRlZ3kqKiB0aGF0IHdvdWxkIGdlbmVyYXRlIHRoZSBtYXhpbXVtIGluY29tZSBmb3IgdGhlIGNvbXBhbnkuIEhlbmNlLCBvdXIgZ29hbCBpcyB0byBpZGVudGlmeSB0aGUgbW9zdCBwcm9maXRhYmxlIGN1c3RvbWVyIHRhcmdldHMgYW5kIGRldGVybWluZSB3aGljaCBwcm9kdWN0cyB3ZSBzaG91bGQgc2hvdyB0aGVtIGluIG9yZGVyIHRvIGFjaGlldmUgdGhlIGhpZ2hlc3QgcG9zc2libGUgY29udmVyc2lvbiByYXRlLiBUaGV5IHByb3ZpZGVkIHVzIHdpdGggdGhpcyBkYXRhc2V0IGNvbnRhaW5pbmcgaW5mb3JtYXRpb24gYWJvdXQgY3VzdG9tZXIgZGVtb2dyYXBoaWNzIGFuZCB0aGVpciBwdXJjaGFzZSBiZWhhdmlvci4gVGhpcyBpcyBhIHdlYWx0aCBvZiB2YWx1YWJsZSBkYXRhIGF2YWlsYWJsZSBpbiBtb3N0IGVDb21tZXJjZSBwbGF0Zm9ybXMgdGhhbmtzIHRvIGFjY291bnQgcmVnaXN0cmF0aW9ucy4gTGV0J3Mgc2VlIGhvdyB3ZSBjYW4gZGVzaWduIGEgZ3JlYXQgKiphZCBjYW1wYWlnbiB1c2luZyBkYXRhIGFuYWx5c2lzIGFuZCBidXNpbmVzcyBpbnRlbGxpZ2VuY2UhKioNCg0KIyMgU2V0IFVwDQoNCmBgYHtyIHNldHVwLCBpbmNsdWRlPUZBTFNFfQ0Ka25pdHI6Om9wdHNfY2h1bmskc2V0KGVjaG8gPSBUUlVFKQ0KYGBgDQoNCiMjIyBJbnN0YWxsaW5nIFBhY2thZ2VzDQoNCmBgYHtyIGluc3RhbGwgcGFja2FnZXMsIGV2YWw9RkFMU0UsIHdhcm5pbmc9RkFMU0UsIG1lc3NhZ2U9RkFMU0V9DQojIEV4ZWN1dGUgdGhpcyBjaHVuY2sganVzdCBpbiBjYXNlIHRoZSBsaWJyYXJpZXMgZG8gbm90IGxvYWQgcHJvcGVybHkNCiNpbnN0YWxsLnBhY2thZ2VzKCJyZWFkciIpDQojaW5zdGFsbC5wYWNrYWdlcygiUnRvb2xzIikNCiNpbnN0YWxsLnBhY2thZ2VzKCJkcGx5ciIpDQojaW5zdGFsbC5wYWNrYWdlcygiZ2dwbG90MiIpDQojaW5zdGFsbC5wYWNrYWdlcygic2NhbGVzIikNCiNpbnN0YWxsLnBhY2thZ2VzKCJzcWxkZiIpDQojaW5zdGFsbC5wYWNrYWdlcygiaHJicnRoZW1lcyIpDQojaW5zdGFsbC5wYWNrYWdlcygiZXh0cmFmb250IikNCiNpbnN0YWxsLnBhY2thZ2VzKCJybWRmb3JtYXRzIikNCiNpbnN0YWxsLnBhY2thZ2VzKCJSQ29sb3JCcmV3ZXIiKQ0KI0luc3RhbGwucGFja2FnZXMoImx1YnJpZGF0ZSIpDQpgYGANCg0KYGBge3IgcmVxdWlyZWQgcGFja2FnZXMsICB3YXJuaW5nPUZBTFNFLCBtZXNzYWdlPUZBTFNFfQ0KbGlicmFyeShyZWFkcikNCmxpYnJhcnkoZHBseXIpDQpsaWJyYXJ5KGdncGxvdDIpDQpsaWJyYXJ5KHNjYWxlcykNCmxpYnJhcnkoc3FsZGYpDQpsaWJyYXJ5KHN0YXRzKQ0KbGlicmFyeShyYW5kb21Gb3Jlc3QpDQpsaWJyYXJ5KFJDb2xvckJyZXdlcikNCmxpYnJhcnkobHVicmlkYXRlKQ0KYGBgDQoNCiMjIyBJbXBvcnQgRGF0YXNldA0KDQpgYGB7ciBpbXBvcnQgZGF0YXNldCwgd2FybmluZz1GQUxTRSwgbWVzc2FnZT1GQUxTRX0NCiNNYWtlIHN1cmUgeW91IGNoYW5nZSAnRGF0YS5jc3YnIGZvciB0aGUgcHJvcGVyIGxvY2F0aW9uIG9mIHRoZSBkYXRhc2V0IGluIHlvdXIgcmVwb3NpdG9yeQ0KRGF0YSA8LSByZWFkX2NzdigiRGF0YS5jc3YiKQ0KDQojWW91IGNhbiBkb3dubG9hZCBkYXRhc2V0IGZyb206IGh0dHBzOi8vd3d3LmthZ2dsZS5jb20vZGF0YXNldHMvc2FsYWh1ZGRpbmFobWVkc2h1dm8vZWNvbW1lcmNlLWNvbnN1bWVyLWJlaGF2aW9yLWFuYWx5c2lzLWRhdGENCg0KI0NyZWRpdHMgdG86IFNhbGFodWRkaW4gQWhtZWQgOiBodHRwczovL3d3dy5rYWdnbGUuY29tL3NhbGFodWRkaW5haG1lZHNodXZvIFRoYW5rIFlvdSBmb3IgdGhpcyBncmVhdCBEYXRhc2V0IQ0KYGBgDQoNCiMjIyBDaGVjayBUaGUgRGF0YWJhc2UgVXBsb2FkDQoNCmBgYHtyfQ0KI0xldCdzIHNlZSBob3cgdGhlIGRhdGFzZXQgbG9va3MhDQpoZWFkKERhdGEpDQpgYGANCg0KIyMgRGF0YSBjbGVhbmluZyAmIHByZXBhcmF0aW9uDQoNClRoZSBkYXRhc2V0IGhhcyBsb2FkZWQgY29ycmVjdGx5LiBXZSBjYW4gc2VlIHRoYXQgaXQgY29udGFpbnMgMjggY29sdW1ucywgbWFueSBvZiB3aGljaCBoYXZlIGRpZmZlcmVudCBkYXRhIHR5cGVzLiBIb3dldmVyLCB0aGV5IGFyZSBub3QgY29ycmVjdGx5IGlkZW50aWZpZWQgYnkgUiwgd2hpY2ggbWF5IG1ha2UgaXQgZGlmZmljdWx0IGZvciB1cyB0byBvYnRhaW4gc3RhdGlzdGljcyBhbmQgb3RoZXIgaW5zaWdodHMgZnJvbSB0aGUgZGF0YS4gVGhlcmVmb3JlLCB3ZSB3aWxsIGZpeCB0aGlzLg0KDQpgYGB7ciBmaXhpbmcgZGF0YSB0eXBlcywgd2FybmluZz1GQUxTRSwgbWVzc2FnZT1GQUxTRX0NCiNXZSBtaWdodCB1c2UgQ3VzdG9tZXJfSUQgZm9yIGdyb3VwaW5nIGxhdGVyLCB0aGVyZWZvcmUsIHdlIGhhdmUgdG8gbWFrZSBpdCBhIGZhY3RvciB2YXJpYWJsZSwgdGhlIG90aGVyIHZhcmlhYmxlcyBhcmUgbG9naWMgdG8gY29udmVydCB0byB0aGVpciBjb3JyZXNwb25kaW5nIERhdGEgVHlwZQ0KDQpEYXRhMiA8LSBEYXRhICU+JQ0KICBtdXRhdGUoDQogICAgQ3VzdG9tZXJfSUQgPSBhcy5jaGFyYWN0ZXIoQ3VzdG9tZXJfSUQpLCAgIyBJRCBpcyB1c3VhbGx5IGEgY2hhcmFjdGVyIHRvIHByZXNlcnZlIGxlYWRpbmcgemVyb3MNCiAgICBBZ2UgPSBhcy5pbnRlZ2VyKEFnZSksICAjIEFnZSBpcyBhIHdob2xlIG51bWJlcg0KICAgIEdlbmRlciA9IGFzLmZhY3RvcihHZW5kZXIpLCAgIyBHZW5kZXIgaXMgY2F0ZWdvcmljYWwNCiAgICBJbmNvbWVfTGV2ZWwgPSBhcy5mYWN0b3IoSW5jb21lX0xldmVsKSwgICMgSW5jb21lIGNhdGVnb3JpZXMgKGUuZy4sIExvdywgTWVkaXVtLCBIaWdoKQ0KICAgIE1hcml0YWxfU3RhdHVzID0gYXMuZmFjdG9yKE1hcml0YWxfU3RhdHVzKSwgICMgQ2F0ZWdvcmljYWwgKFNpbmdsZSwgTWFycmllZCwgZXRjLikNCiAgICBFZHVjYXRpb25fTGV2ZWwgPSBhcy5mYWN0b3IoRWR1Y2F0aW9uX0xldmVsKSwgICMgQ2F0ZWdvcmljYWwNCiAgICBPY2N1cGF0aW9uID0gYXMuZmFjdG9yKE9jY3VwYXRpb24pLCAgIyBDYXRlZ29yaWNhbA0KICAgIExvY2F0aW9uID0gYXMuZmFjdG9yKExvY2F0aW9uKSwgICMgQ2F0ZWdvcmljYWwgKENpdHkvUmVnaW9uKQ0KICAgIFB1cmNoYXNlX0NhdGVnb3J5ID0gYXMuZmFjdG9yKFB1cmNoYXNlX0NhdGVnb3J5KSwgICMgQ2F0ZWdvcmljYWwNCiAgICBQdXJjaGFzZV9BbW91bnQgPSBhcy5udW1lcmljKFB1cmNoYXNlX0Ftb3VudCksICAjIE51bWVyaWMgKG1vbmV5IGFtb3VudCkNCiAgICBGcmVxdWVuY3lfb2ZfUHVyY2hhc2UgPSBhcy5pbnRlZ2VyKEZyZXF1ZW5jeV9vZl9QdXJjaGFzZSksICAjIFdob2xlIG51bWJlciAoZS5nLiwgdGltZXMgcGVyIG1vbnRoKQ0KICAgIFB1cmNoYXNlX0NoYW5uZWwgPSBhcy5mYWN0b3IoUHVyY2hhc2VfQ2hhbm5lbCksICAjIENhdGVnb3JpY2FsIChPbmxpbmUsIEluLVN0b3JlLCBldGMuKQ0KICAgIEJyYW5kX0xveWFsdHkgPSBhcy5udW1lcmljKEJyYW5kX0xveWFsdHkpLCAgIyBsaWtlcnQgc2NhbGUgMS01DQogICAgUHJvZHVjdF9SYXRpbmcgPSBhcy5udW1lcmljKFByb2R1Y3RfUmF0aW5nKSwgICMgTnVtZXJpYyAoMS01IHN0YXJzKQ0KICAgIGBUaW1lX1NwZW50X29uX1Byb2R1Y3RfUmVzZWFyY2goaG91cnMpYCA9IGFzLm51bWVyaWMoYFRpbWVfU3BlbnRfb25fUHJvZHVjdF9SZXNlYXJjaChob3VycylgKSwgICMgTnVtZXJpYw0KICAgIFNvY2lhbF9NZWRpYV9JbmZsdWVuY2UgPSBhcy5mYWN0b3IoU29jaWFsX01lZGlhX0luZmx1ZW5jZSksICAjIENhdGVnb3JpY2FsIChlLmcuLCBIaWdoLCBNZWRpdW0sIExvdykNCiAgICBEaXNjb3VudF9TZW5zaXRpdml0eSA9IGFzLmZhY3RvcihEaXNjb3VudF9TZW5zaXRpdml0eSksICAjIENhdGVnb3JpY2FsDQogICAgUmV0dXJuX1JhdGUgPSBhcy5udW1lcmljKFJldHVybl9SYXRlKSwgICMgTnVtZXJpYyAocGVyY2VudGFnZSBvciBjb3VudCkNCiAgICBDdXN0b21lcl9TYXRpc2ZhY3Rpb24gPSBhcy5udW1lcmljKEN1c3RvbWVyX1NhdGlzZmFjdGlvbiksICAjIE51bWVyaWMgKDEtMTAgc2NhbGUpDQogICAgRW5nYWdlbWVudF93aXRoX0FkcyA9IGFzLmZhY3RvcihFbmdhZ2VtZW50X3dpdGhfQWRzKSwgICMgQ2F0ZWdvcmljYWwNCiAgICBEZXZpY2VfVXNlZF9mb3JfU2hvcHBpbmcgPSBhcy5mYWN0b3IoRGV2aWNlX1VzZWRfZm9yX1Nob3BwaW5nKSwgICMgQ2F0ZWdvcmljYWwNCiAgICBQYXltZW50X01ldGhvZCA9IGFzLmZhY3RvcihQYXltZW50X01ldGhvZCksICAjIENhdGVnb3JpY2FsIChlLmcuLCBDcmVkaXQgQ2FyZCwgUGF5UGFsKQ0KICAgIFRpbWVfb2ZfUHVyY2hhc2UgPSBhcy5QT1NJWGN0KFRpbWVfb2ZfUHVyY2hhc2UsIGZvcm1hdD0iJW0vJWQvJVkiKSwgICMgRGF0ZS1UaW1lIGZvcm1hdA0KICAgIERpc2NvdW50X1VzZWQgPSBhcy5sb2dpY2FsKERpc2NvdW50X1VzZWQpLCAgIyBCb29sZWFuIChUUlVFL0ZBTFNFKQ0KICAgIEN1c3RvbWVyX0xveWFsdHlfUHJvZ3JhbV9NZW1iZXIgPSBhcy5sb2dpY2FsKEN1c3RvbWVyX0xveWFsdHlfUHJvZ3JhbV9NZW1iZXIpLCAgIyBCb29sZWFuIChUUlVFL0ZBTFNFKQ0KICAgIFB1cmNoYXNlX0ludGVudCA9IGFzLmZhY3RvcihQdXJjaGFzZV9JbnRlbnQpLCAgIyBDYXRlZ29yaWNhbCAoZS5nLiwgSGlnaCwgTWVkaXVtLCBMb3cpDQogICAgU2hpcHBpbmdfUHJlZmVyZW5jZSA9IGFzLmZhY3RvcihTaGlwcGluZ19QcmVmZXJlbmNlKSwgICMgQ2F0ZWdvcmljYWwNCiAgICBUaW1lX3RvX0RlY2lzaW9uID0gYXMubnVtZXJpYyhUaW1lX3RvX0RlY2lzaW9uKSAgIyBOdW1lcmljIChlLmcuLCBtaW51dGVzL2hvdXJzKQ0KICApDQpgYGANCg0KTm93LCBsZXRzIGV2YWx1YXRlIGhvdyB0aGUgZGF0YSBzZXQgbG9va3MgbGlrZSENCg0KYGBge3J9DQpzdHIoRGF0YTIpDQpgYGANCg0KR3JlYXQhIFdlIG5vdyBoYXZlIHRoZSBjb3JyZWN0IGRhdGEgdHlwZXMgZm9yIG91ciB2YXJpYWJsZXMuIEhvd2V2ZXIsIHRoZXJlIGlzIHNvbWV0aGluZyB0aGF0IG1pZ2h0IHNlZW0gbGlrZSBhIHByb2JsZW3igJR0aGUgdmFyaWFibGUgKioiUHVyY2hhc2UgQW1vdW50IioqIGlzIGZ1bGwgb2YgKipOQSoqIHZhbHVlcy4gVGhlc2UgYXJlIG51bGwgdmFsdWVzLCBhbmQgaXQgd291bGQgYmUgYSBzaWduaWZpY2FudCBpc3N1ZSBpZiB0aGlzIHZhcmlhYmxlIGNvbnRhaW5lZCBvbmx5ICoqTkEqKiB2YWx1ZXMsIGFzIGl0IGlzIGNydWNpYWwgZm9yIGdlbmVyYXRpbmcgaW1wYWN0ZnVsIGluc2lnaHRzLiBMZXQncyBjaGVjayBpZiB0aGF0IGlzIHRoZSBjYXNlLg0KDQpgYGB7cn0NCnN1bShpcy5uYShEYXRhMiRQdXJjaGFzZV9BbW91bnQpKQ0KYGBgDQoNCkFzIHlvdSBjYW4gc2VlLCB0aGUgZW50aXJlIGNvbHVtbiBpcyBmaWxsZWQgd2l0aCAqKk5BKiogdmFsdWVzLiBUaGlzIGlzIGJlY2F1c2UgdGhlIGNvbHVtbiBpcyB3cml0dGVuIGFzICoqIlwkLiIqKuKAlHRoZSBjdXJyZW5jeSBzeW1ib2wgY2F1c2VzIHRoZSBjb252ZXJzaW9uIHRvIHByb2R1Y2UgKipOQSoqIHZhbHVlcyBzaW5jZSBpdCBpcyBub3QgYSBudW1lcmljIGNoYXJhY3Rlci4gTGV0J3MgcmVtb3ZlIHRoZSBzeW1ib2wgYW5kIHByb2Nlc3MgdGhlIGNvbHVtbiBhZ2Fpbi4NCg0KYGBge3J9DQpEYXRhMiRQdXJjaGFzZV9BbW91bnQgPC0gZ3N1YigiXFwkIiwgIiIsIERhdGEkUHVyY2hhc2VfQW1vdW50KQ0KRGF0YTIkUHVyY2hhc2VfQW1vdW50IDwtIGFzLm51bWVyaWMoRGF0YTIkUHVyY2hhc2VfQW1vdW50KQ0Kc3RyKERhdGEyJFB1cmNoYXNlX0Ftb3VudCkNCmBgYA0KDQpBd2Vzb21lISBOb3cgdGhhdCBvdXIgdmFyaWFibGVzIGhhdmUgdGhlIGNvcnJlY3QgZGF0YSB0eXBlIGxldCdzIHRha2UgYSBsb29rIHRvIHRoZSBzdGF0aXN0aWNzIG9mIHRoaXMgZGF0YSBmcmFtZS4NCg0KYGBge3J9DQpzdW1tYXJ5KERhdGEyKQ0KYGBgDQoNCldvdyEgVGhpcyBpcyBncmVhdC4gRnJvbSB0aGUgc3VtbWFyeSBvZiB0aGUgZGF0YXNldCwgd2UgY2FuIHN0YXJ0IHVuY292ZXJpbmcgbWVhbmluZ2Z1bCBpbnNpZ2h0cyBhYm91dCB0aGUgYnVzaW5lc3Mgd2UgYXJlIHdvcmtpbmcgd2l0aC4gRm9yIGV4YW1wbGU6DQoNCi0gICBGaXJzdCwgdGhlIGRhdGFiYXNlIGFwcGVhcnMgdG8gYmUgd2VsbC1iYWxhbmNlZCBpbiB0ZXJtcyBvZiBpbmNvbWUgbGV2ZWxzLCBtYXJpdGFsIHN0YXR1cywgYW5kIHB1cmNoYXNlIGNhdGVnb3JpZXMuDQoNCi0gICBXZSBhbHNvIG5vdGljZSB0aGF0IHRoZSBjb21wYW55IHNlZW1zIHRvIGJlIGZvY3VzaW5nIG1vcmUgb24gb25lIGdlbmRlciwgcG9zc2libHkgZHVlIHRvIGEgZ2VuZGVyIGluY2x1c2lvbiB1cGRhdGUgaW4gdGhlaXIgdmFsdWVzLg0KDQotICAgQWRkaXRpb25hbGx5LCBtb3N0IGN1c3RvbWVycyBwdXJjaGFzZSB0aHJvdWdoIG1peGVkIGNoYW5uZWxzLCBtZWFuaW5nIHRoZSBtYWpvcml0eSBzaG9wIGJvdGggb25saW5lIGFuZCBpbi1zdG9yZS4NCg0KLSAgIFRoZSBtYWpvcml0eSBvZiBwYXltZW50cyBhcmUgbWFkZSB1c2luZyBQYXlQYWwuDQoNCi0gICBNb3N0IGNsaWVudHMgYXJlIGhpZ2hseSBzZW5zaXRpdmUgdG8gZGlzY291bnRzOyBob3dldmVyLCBhdCB0aGUgc2FtZSB0aW1lLCB0aGV5IGRvIG5vdCBiZWxvbmcgdG8gdGhlIGN1c3RvbWVyIGxveWFsdHkgcHJvZ3JhbS4NCg0KIyMgRGF0YSBWaXN1YWxpemF0aW9uDQoNCldlJ3ZlIGFscmVhZHkgZGlzY292ZXJlZCBzb21lIGluc2lnaHRzIGFib3V0IHRoZSBjb21wYW55J3MgY2xpZW50cyBhbmQgdGhlaXIgYmVoYXZpb3IuIEhvd2V2ZXIsIHdlIG5lZWQgbW9yZSBpbmZvcm1hdGlvbiB0byBwcm9wb3NlIGFuIGFkIHN0cmF0ZWd5IHRoYXQgd2lsbCBiZSB3b3J0aCB0aGUgaW52ZXN0bWVudC4gTGV0J3MgY3JlYXRlIHNvbWUgY3Jvc3MtdmlzdWFsaXphdGlvbnMgdG8gdW5jb3ZlciBkZWVwZXIgaW5zaWdodHMgZnJvbSBvdXIgZGF0YS4NCg0KRmlyc3QsIEkgd291bGQgcmVhbGx5IGxpa2UgdG8gZGV0ZXJtaW5lIHdoaWNoIGNoYW5uZWwgZ2VuZXJhdGVzIG1vcmUgcmV2ZW51ZS4gU2luY2UgcnVubmluZyBhIHBoeXNpY2FsIHN0b3JlIGlzIG1vcmUgZXhwZW5zaXZlIHRoYW4gbWFpbnRhaW5pbmcgYSB3ZWJzaXRlLCB0aGUgZXhwZWN0YXRpb24gd291bGQgYmUgdGhhdCB0aGUgc3RvcmUgZ2VuZXJhdGVzIG1vcmUgaW5jb21lLg0KDQpgYGB7cn0NCiMgTGV0J3MgdGFrZSBhZHZhbnRhZ2Ugb2Ygc3FsZGYgZnVuY3Rpb24gYW5kIGNyZWF0ZSBhIGRhdGFzZXQgZm9yIHRoaXMgcGxvdCB1c2luZyBTUUwNCnNhbGVzX3Blcl9jaGFubmVsIDwtIHNxbGRmKA0KIlNFTEVDVCBgUHVyY2hhc2VfQ2hhbm5lbGAsIFNVTShgUHVyY2hhc2VfQW1vdW50YCkgQVMgc2FsZXNfdG90DQogRlJPTSBEYXRhMg0KICBHUk9VUCBCWSBgUHVyY2hhc2VfQ2hhbm5lbGANCiAgT1JERVIgQlkgc2FsZXNfdG90IERFU0MiKQ0KDQojIEJhciBQbG90DQpwbG90X2NoYW5uZWxfc2FsZXMgPC0gZ2dwbG90KHNhbGVzX3Blcl9jaGFubmVsLCBhZXMoeCA9IHJlb3JkZXIoYFB1cmNoYXNlX0NoYW5uZWxgLCBzYWxlc190b3QpLCB5ID0gc2FsZXNfdG90LCBmaWxsID0gYFB1cmNoYXNlX0NoYW5uZWxgKSkgKw0KICBnZW9tX2JhcihzdGF0ID0gImlkZW50aXR5IikgKw0KICBjb29yZF9mbGlwKCkgKyAgDQogIGxhYnModGl0bGUgPSAiVG90YWwgc2FsZXMgYnkgUHVyY2hhc2UgQ2hhbm5lbCIsDQogICAgICAgeCA9ICJQdXJjaGFzZSBDaGFubmVsIiwNCiAgICAgICB5ID0gIlB1cmNoYXNlIFZvbHVtZSIpICsNCiAgdGhlbWUoDQogICAgcGFuZWwuYmFja2dyb3VuZCA9IGVsZW1lbnRfcmVjdChmaWxsID0gImdyYXkyMCIsIGNvbG9yID0gImJsYWNrIiksIA0KICAgIHBsb3QuYmFja2dyb3VuZCA9IGVsZW1lbnRfcmVjdChmaWxsID0gImdyYXkyMCIpLCANCiAgICBwYW5lbC5ncmlkLm1ham9yID0gZWxlbWVudF9saW5lKGNvbG9yID0gIndoaXRlIiwgbGluZXR5cGUgPSAiZGFzaGVkIiksICANCiAgICBwYW5lbC5ncmlkLm1pbm9yID0gZWxlbWVudF9saW5lKGNvbG9yID0gIndoaXRlIiwgbGluZXR5cGUgPSAiZGFzaGVkIiksICANCiAgICBheGlzLnRleHQgPSBlbGVtZW50X3RleHQoY29sb3IgPSAid2hpdGUiKSwgIA0KICAgIGF4aXMudGl0bGUgPSBlbGVtZW50X3RleHQoY29sb3IgPSAid2hpdGUiKSwgDQogICAgcGxvdC50aXRsZSA9IGVsZW1lbnRfdGV4dChjb2xvciA9ICJ3aGl0ZSIsIGhqdXN0ID0gMC41LCBmYWNlID0gImJvbGQiKSwgIA0KICAgIGxlZ2VuZC5iYWNrZ3JvdW5kID0gZWxlbWVudF9yZWN0KGZpbGwgPSAiZ3JheTIwIiwgY29sb3IgPSAiYmxhY2siKSwgDQogICAgbGVnZW5kLnRleHQgPSBlbGVtZW50X3RleHQoY29sb3IgPSAid2hpdGUiKSwgDQogICAgbGVnZW5kLnRpdGxlID0gZWxlbWVudF90ZXh0KGNvbG9yID0gIndoaXRlIikpICsNCiAgc2NhbGVfeV9jb250aW51b3VzKGxhYmVscyA9IGRvbGxhcl9mb3JtYXQocHJlZml4ID0gIiQiKSkNCg0KcGxvdF9jaGFubmVsX3NhbGVzDQpgYGANCg0KV2UgY2FuIGNsZWFybHkgc2VlIHRoYXQgdGhlIGNoYW5uZWwgd2l0aCB0aGUgaGlnaGVzdCB0cmFmZmljIGlzIHRoZSBvbmxpbmUgY2hhbm5lbC4gR2l2ZW4gdGhhdCBpdCBpcyB0aGUgbW9zdCBwb3B1bGFyLCB3aXRoIGxvd2VyIGNvc3RzIGZvciBtYWludGFpbmluZyBhIHdlYnNpdGUsIGFuZCBjb25zaWRlcmluZyB0aGUgbmVlZCB0byBjcmVhdGUgYW4gYWQgY2FtcGFpZ24gdG8gYm9vc3Qgc2FsZXMsIHdlIHdpbGwgZm9jdXMgc29sZWx5IG9uIGFuYWx5emluZyBvbmxpbmUgc2FsZXMgYW5kIGRldmVsb3AgYSBwcm9wb3NhbCBiYXNlZCBvbiB0aGUgaW5zaWdodHMgd2UgZ2F0aGVyLg0KDQpCZWZvcmUgbW92aW5nIGZvcndhcmQsIHdlIG5lZWQgdG8gZW5zdXJlIHRoYXQgdGhpcyBzYWxlcyB2b2x1bWUgaXNuJ3Qgc2ltcGx5IGR1ZSB0byBhIGhpZ2hlciBudW1iZXIgb2YgcHVyY2hhc2VzLiBUaGVyZWZvcmUsIHdlIHdpbGwgcGxvdCB0aGUgbnVtYmVyIG9mIHB1cmNoYXNlcyBieSBjaGFubmVsLg0KDQpgYGB7cn0NCmdncGxvdChEYXRhMiwgYWVzKHggPSBQdXJjaGFzZV9DaGFubmVsLCBmaWxsID0gUHVyY2hhc2VfQ2hhbm5lbCkpICsNCiAgZ2VvbV9iYXIoKSArIA0KICBsYWJzKHRpdGxlID0gIk51bWJlciBvZiBQdXJjaGFzZXMgcGVyIENoYW5uZWwiLA0KICAgICAgIHggPSAiUHVyY2hhc2UgQ2hhbm5lbCIsDQogICAgICAgeSA9ICJOdW1iZXIgb2YgUHVyY2hhc2VzIikgKw0KICB0aGVtZSgNCiAgICBwYW5lbC5iYWNrZ3JvdW5kID0gZWxlbWVudF9yZWN0KGZpbGwgPSAiZ3JheTIwIiwgY29sb3IgPSAiYmxhY2siKSwgDQogICAgcGxvdC5iYWNrZ3JvdW5kID0gZWxlbWVudF9yZWN0KGZpbGwgPSAiZ3JheTIwIiksIA0KICAgIHBhbmVsLmdyaWQubWFqb3IgPSBlbGVtZW50X2xpbmUoY29sb3IgPSAid2hpdGUiLCBsaW5ldHlwZSA9ICJkYXNoZWQiKSwgIA0KICAgIHBhbmVsLmdyaWQubWlub3IgPSBlbGVtZW50X2xpbmUoY29sb3IgPSAid2hpdGUiLCBsaW5ldHlwZSA9ICJkYXNoZWQiKSwgIA0KICAgIGF4aXMudGV4dCA9IGVsZW1lbnRfdGV4dChjb2xvciA9ICJ3aGl0ZSIpLCAgDQogICAgYXhpcy50aXRsZSA9IGVsZW1lbnRfdGV4dChjb2xvciA9ICJ3aGl0ZSIpLCANCiAgICBwbG90LnRpdGxlID0gZWxlbWVudF90ZXh0KGNvbG9yID0gIndoaXRlIiwgaGp1c3QgPSAwLjUsIGZhY2UgPSAiYm9sZCIpLCAgDQogICAgbGVnZW5kLmJhY2tncm91bmQgPSBlbGVtZW50X3JlY3QoZmlsbCA9ICJncmF5MjAiLCBjb2xvciA9ICJibGFjayIpLCANCiAgICBsZWdlbmQudGV4dCA9IGVsZW1lbnRfdGV4dChjb2xvciA9ICJ3aGl0ZSIpLCANCiAgICBsZWdlbmQudGl0bGUgPSBlbGVtZW50X3RleHQoY29sb3IgPSAid2hpdGUiKSkNCmBgYA0KDQpHcmVhdCwgd2UgY2FuIHNlZSB0aGF0IHRoZSBudW1iZXIgb2Ygc2FsZXMgcGVyIGNoYW5uZWwgaXMgZmFpcmx5IGJhbGFuY2VkLCB3aXRoIGEgZGlmZmVyZW5jZSBvZiBvbmx5IDggc2FsZXMsIHdoaWNoIGlzIGJhcmVseSBhIDIlIGRpZmZlcmVuY2UuIEdpdmVuIHRoZSBzaXplIG9mIHRoZSBkYXRhc2V0LCB0aGlzIGRpZmZlcmVuY2UgaXMgbm90IHNpZ25pZmljYW50LCBzbyB3ZSB3aWxsIHByb2NlZWQgd2l0aCBvdXIgYW5hbHlzaXMuIEZyb20gbm93IG9uLCB3ZSB3aWxsIGZvY3VzIHNvbGVseSBvbiB0aGUgT25saW5lIGNoYW5uZWwsIGFzIHJ1bm5pbmcgYWRzIGZvciB0aGUgd2Vic2l0ZSB3aWxsIGJlIGVhc2llciBmb3IgdGhlIG1hcmtldGluZyB0ZWFtLCBhbmQgaXQgd2lsbCBhbHNvIG1ha2UgdGhlIGFuYWx5c2lzIG1vcmUgc3RyYWlnaHRmb3J3YXJkLiBMZXQncyBjcmVhdGUgYSBuZXcgZGF0YXNldCB1c2luZyB0aGUgY2hhbm5lbCBmaWx0ZXIuDQoNCmBgYHtyfQ0KIyBGaWx0ZXIgb25seSBPbmxpbmUgQ2hhbm5lbCBvcmRlcnMNCm9ubGluZV9vcmRlcnMgPC0gRGF0YTIgJT4lDQogIGZpbHRlcihQdXJjaGFzZV9DaGFubmVsID09ICJPbmxpbmUiKQ0KYGBgDQoNCk5vdyBsZXQncyBzZWUgd2hpY2ggY2F0ZWdvcnkgYnJpbmdzIG1vcmUgaW5jb21lIGZvY3VzaW5nIGluIHRoZSBvbmxpbmUgY2hhbm5lbA0KDQpgYGB7cn0NCg0KIyBQbG90IDE6IFRvdGFsIFB1cmNoYXNlIEFtb3VudCBwZXIgQ2F0ZWdvcnkNCnBsb3RfcmV2ZW51ZSA8LSBnZ3Bsb3Qob25saW5lX29yZGVycywgYWVzKHggPSByZW9yZGVyKFB1cmNoYXNlX0NhdGVnb3J5LCBQdXJjaGFzZV9BbW91bnQsIHN1bSksIHkgPSBQdXJjaGFzZV9BbW91bnQsIGZpbGwgPSBQdXJjaGFzZV9DYXRlZ29yeSkpICsNCiAgZ2VvbV9iYXIoc3RhdCA9ICJpZGVudGl0eSIpICsNCiAgbGFicyh0aXRsZSA9ICJUb3RhbCBQdXJjaGFzZSBBbW91bnQgYnkgQ2F0ZWdvcnkgKE9ubGluZSkiLA0KICAgICAgIHggPSAiUHVyY2hhc2UgQ2F0ZWdvcnkiLA0KICAgICAgIHkgPSAiVG90YWwgUHVyY2hhc2UgQW1vdW50IikgKw0KICB0aGVtZV9taW5pbWFsKCkNCg0KIyBQbG90IDI6IE51bWJlciBvZiBQdXJjaGFzZXMgcGVyIENhdGVnb3J5DQpwbG90X3BvcHVsYXJpdHkgPC0gZ2dwbG90KG9ubGluZV9vcmRlcnMsIGFlcyh4ID0gUHVyY2hhc2VfQ2F0ZWdvcnksIGZpbGwgPSBQdXJjaGFzZV9DYXRlZ29yeSkpICsNCiAgZ2VvbV9iYXIoKSArDQogIGxhYnModGl0bGUgPSAiTnVtYmVyIG9mIFB1cmNoYXNlcyBieSBDYXRlZ29yeSAoT25saW5lKSIsDQogICAgICAgeCA9ICJQdXJjaGFzZSBDYXRlZ29yeSIsDQogICAgICAgeSA9ICJOdW1iZXIgb2YgUHVyY2hhc2VzIikgKw0KICB0aGVtZV9taW5pbWFsKCkNCg0KcGxvdF9yZXZlbnVlDQoNCnBsb3RfcG9wdWxhcml0eQ0KYGBgDQoNCk9oIG5vISBUaGlzIGxvb2tzIHByZXR0eSBjbHV0dGVyZWQgd2l0aCBzbyBtYW55IGNhdGVnb3JpZXMsIGFuZCB3ZSdyZSBub3QgYWJsZSB0byBleHRyYWN0IGFueSB1c2VmdWwgaW5zaWdodHMgZnJvbSBpdC4gTGV0J3MgbmFycm93IGl0IGRvd24gYnkgZmlsdGVyaW5nIHRoZSB0b3AgNSBjYXRlZ29yaWVzLCBzbyB3ZSBjYW4gZ2FpbiBiZXR0ZXIgaW5zaWdodHMuIFdlJ2xsIGFsc28gcGxvdCB0aGVtIHNlcGFyYXRlbHkuDQoNCmBgYHtyfQ0KIyBHZXQgdGhlIHRvcCA1IGNhdGVnb3JpZXMgYnkgbnVtYmVyIG9mIHB1cmNoYXNlcw0KdG9wNV9wb3B1bGFyaXR5IDwtIG9ubGluZV9vcmRlcnMgJT4lDQogIGNvdW50KFB1cmNoYXNlX0NhdGVnb3J5LCBuYW1lID0gIm51bV9wdXJjaGFzZXMiKSAlPiUNCiAgYXJyYW5nZShkZXNjKG51bV9wdXJjaGFzZXMpKSAlPiUNCiAgc2xpY2VfaGVhZChuID0gNSkgICMgU2VsZWN0IHRvcCA1DQoNCiMgVG9wIDUgQ2F0ZWdvcmllcyBieSBOdW1iZXIgb2YgUHVyY2hhc2VzDQpwbG90X0NhdF9wb3B1bGFyaXR5IDwtIGdncGxvdCh0b3A1X3BvcHVsYXJpdHksIGFlcyh4ID0gcmVvcmRlcihQdXJjaGFzZV9DYXRlZ29yeSwgbnVtX3B1cmNoYXNlcyksIHkgPSBudW1fcHVyY2hhc2VzLCBmaWxsID0gUHVyY2hhc2VfQ2F0ZWdvcnkpKSArDQogIGdlb21fYmFyKHN0YXQgPSAiaWRlbnRpdHkiKSArDQogIGNvb3JkX2ZsaXAoKSArDQogIGxhYnModGl0bGUgPSAiVG9wIDUgQ2F0ZWdvcmllcyBieSBQb3B1bGFyaXR5IChPbmxpbmUpIiwNCiAgICAgICB4ID0gIlB1cmNoYXNlIENhdGVnb3J5IiwNCiAgICAgICB5ID0gIk51bWJlciBvZiBQdXJjaGFzZXMiKSArDQogIHRoZW1lKA0KICAgIHBhbmVsLmJhY2tncm91bmQgPSBlbGVtZW50X3JlY3QoZmlsbCA9ICJncmF5MjAiLCBjb2xvciA9ICJibGFjayIpLCANCiAgICBwbG90LmJhY2tncm91bmQgPSBlbGVtZW50X3JlY3QoZmlsbCA9ICJncmF5MjAiKSwgDQogICAgcGFuZWwuZ3JpZC5tYWpvciA9IGVsZW1lbnRfbGluZShjb2xvciA9ICJ3aGl0ZSIsIGxpbmV0eXBlID0gImRhc2hlZCIpLCAgDQogICAgcGFuZWwuZ3JpZC5taW5vciA9IGVsZW1lbnRfbGluZShjb2xvciA9ICJ3aGl0ZSIsIGxpbmV0eXBlID0gImRhc2hlZCIpLCAgDQogICAgYXhpcy50ZXh0ID0gZWxlbWVudF90ZXh0KGNvbG9yID0gIndoaXRlIiksICANCiAgICBheGlzLnRpdGxlID0gZWxlbWVudF90ZXh0KGNvbG9yID0gIndoaXRlIiksIA0KICAgIHBsb3QudGl0bGUgPSBlbGVtZW50X3RleHQoY29sb3IgPSAid2hpdGUiLCBoanVzdCA9IDAuNSwgZmFjZSA9ICJib2xkIiksICANCiAgICBsZWdlbmQuYmFja2dyb3VuZCA9IGVsZW1lbnRfcmVjdChmaWxsID0gImdyYXkyMCIsIGNvbG9yID0gImJsYWNrIiksIA0KICAgIGxlZ2VuZC50ZXh0ID0gZWxlbWVudF90ZXh0KGNvbG9yID0gIndoaXRlIiksIA0KICAgIGxlZ2VuZC50aXRsZSA9IGVsZW1lbnRfdGV4dChjb2xvciA9ICJ3aGl0ZSIpKQ0KDQpwbG90X0NhdF9wb3B1bGFyaXR5DQpgYGANCg0KYGBge3J9DQojIEdldCB0aGUgdG9wIDUgY2F0ZWdvcmllcyBieSByZXZlbnVlIG9mIHB1cmNoYXNlcw0KdG9wNV9yZXZlbnVlIDwtIG9ubGluZV9vcmRlcnMgJT4lDQogIGdyb3VwX2J5KFB1cmNoYXNlX0NhdGVnb3J5KSAlPiUNCiAgc3VtbWFyaXNlKHRvdGFsX3JldmVudWUgPSBzdW0oUHVyY2hhc2VfQW1vdW50KSkgJT4lDQogIGFycmFuZ2UoZGVzYyh0b3RhbF9yZXZlbnVlKSkgJT4lDQogIHNsaWNlX2hlYWQobiA9IDUpICAjIFNlbGVjdCB0b3AgNQ0KDQojIFBsb3Q6IFRvcCA1IENhdGVnb3JpZXMgYnkgUmV2ZW51ZQ0KcGxvdF9DYXRfcmV2ZW51ZSA8LSBnZ3Bsb3QodG9wNV9yZXZlbnVlLCBhZXMoeCA9IHJlb3JkZXIoUHVyY2hhc2VfQ2F0ZWdvcnksIHRvdGFsX3JldmVudWUpLCB5ID0gdG90YWxfcmV2ZW51ZSwgZmlsbCA9IFB1cmNoYXNlX0NhdGVnb3J5KSkgKw0KICBnZW9tX2JhcihzdGF0ID0gImlkZW50aXR5IikgKw0KICBjb29yZF9mbGlwKCkgKw0KICBsYWJzKHRpdGxlID0gIlRvcCA1IENhdGVnb3JpZXMgYnkgUmV2ZW51ZSAoT25saW5lKSIsDQogICAgICAgeCA9ICJQdXJjaGFzZSBDYXRlZ29yeSIsDQogICAgICAgeSA9ICJUb3RhbCBQdXJjaGFzZSBBbW91bnQiKSArDQogIHRoZW1lKA0KICAgIHBhbmVsLmJhY2tncm91bmQgPSBlbGVtZW50X3JlY3QoZmlsbCA9ICJncmF5MjAiLCBjb2xvciA9ICJibGFjayIpLCANCiAgICBwbG90LmJhY2tncm91bmQgPSBlbGVtZW50X3JlY3QoZmlsbCA9ICJncmF5MjAiKSwgDQogICAgcGFuZWwuZ3JpZC5tYWpvciA9IGVsZW1lbnRfbGluZShjb2xvciA9ICJ3aGl0ZSIsIGxpbmV0eXBlID0gImRhc2hlZCIpLCAgDQogICAgcGFuZWwuZ3JpZC5taW5vciA9IGVsZW1lbnRfbGluZShjb2xvciA9ICJ3aGl0ZSIsIGxpbmV0eXBlID0gImRhc2hlZCIpLCAgDQogICAgYXhpcy50ZXh0ID0gZWxlbWVudF90ZXh0KGNvbG9yID0gIndoaXRlIiksICANCiAgICBheGlzLnRpdGxlID0gZWxlbWVudF90ZXh0KGNvbG9yID0gIndoaXRlIiksIA0KICAgIHBsb3QudGl0bGUgPSBlbGVtZW50X3RleHQoY29sb3IgPSAid2hpdGUiLCBoanVzdCA9IDAuNSwgZmFjZSA9ICJib2xkIiksICANCiAgICBsZWdlbmQuYmFja2dyb3VuZCA9IGVsZW1lbnRfcmVjdChmaWxsID0gImdyYXkyMCIsIGNvbG9yID0gImJsYWNrIiksIA0KICAgIGxlZ2VuZC50ZXh0ID0gZWxlbWVudF90ZXh0KGNvbG9yID0gIndoaXRlIiksIA0KICAgIGxlZ2VuZC50aXRsZSA9IGVsZW1lbnRfdGV4dChjb2xvciA9ICJ3aGl0ZSIpKQ0KDQpwbG90X0NhdF9yZXZlbnVlDQpgYGANCg0KDQpWZXJ5IGludGVyZXN0aW5nISBJdCdzIGNsZWFyIHRoYXQgd2UgaGF2ZSBhIGNsZWFyIHdpbm5lcjogU3BvcnRzICYgT3V0ZG9vcnMuIEFsc28sIGNvbnNpZGVyaW5nIHRoYXQgc3VtbWVyIGlzIGp1c3QgYXJvdW5kIHRoZSBjb3JuZXIsIHJ1bm5pbmcgYW4gYWQgY2FtcGFpZ24gZm9yIHRoaXMgcHJvZHVjdCB3b3VsZCBiZSBhIGdyZWF0IHByb3Bvc2FsLiBUb3lzIGFuZCBHYW1lcyBjb21lIGluIHNlY29uZCBwbGFjZSBpbiBib3RoIGdyYXBocywgd2hpY2ggaXMgYWxzbyBwcm9taXNpbmcgZm9yIHNhbGVzLCBhcyBraWRzIGxvdmUgc3VtbWVyIGFuZCB3aWxsIGxpa2VseSBiZSBnZXR0aW5nIG5ldyBnZWFyIHRvIHBsYXkgd2l0aCB0aGVpciBmcmllbmRzIG9yIGF0IGhvbWUuDQoNCk5leHQsIGxldCdzIGFuYWx5emUgd2hpY2ggZ2VuZGVyIGdyb3VwIGlzIHRoZSBtb3N0IHByb2ZpdGFibGUgZm9yIG91ciBvbmxpbmUgY2hhbm5lbC4NCg0KYGBge3J9DQpwbG90X2dlbmRlcmRpc19zcCA8LSBnZ3Bsb3Qob25saW5lX29yZGVycyAlPiUgZmlsdGVyKFB1cmNoYXNlX0NhdGVnb3J5ID09ICJTcG9ydHMgJiBPdXRkb29ycyIpLCBhZXMoeCA9IEdlbmRlciwgZmlsbCA9IEdlbmRlcikpICsNCiAgZ2VvbV9iYXIoKSArDQogIGxhYnModGl0bGUgPSAiR2VuZGVyIERpc3RyaWJ1dGlvbiBvZiBTcG9ydHMgJiBPdXRkb29ycyBQdXJjaGFzZXMiLA0KICAgICAgIHggPSAiR2VuZGVyIiwNCiAgICAgICB5ID0gIk51bWJlciBvZiBQdXJjaGFzZXMiKSArDQogIHRoZW1lKA0KICAgIHBhbmVsLmJhY2tncm91bmQgPSBlbGVtZW50X3JlY3QoZmlsbCA9ICJncmF5MjAiLCBjb2xvciA9ICJibGFjayIpLCANCiAgICBwbG90LmJhY2tncm91bmQgPSBlbGVtZW50X3JlY3QoZmlsbCA9ICJncmF5MjAiKSwgDQogICAgcGFuZWwuZ3JpZC5tYWpvciA9IGVsZW1lbnRfbGluZShjb2xvciA9ICJ3aGl0ZSIsIGxpbmV0eXBlID0gImRhc2hlZCIpLCAgDQogICAgcGFuZWwuZ3JpZC5taW5vciA9IGVsZW1lbnRfbGluZShjb2xvciA9ICJ3aGl0ZSIsIGxpbmV0eXBlID0gImRhc2hlZCIpLCAgDQogICAgYXhpcy50ZXh0ID0gZWxlbWVudF90ZXh0KGNvbG9yID0gIndoaXRlIiksICANCiAgICBheGlzLnRpdGxlID0gZWxlbWVudF90ZXh0KGNvbG9yID0gIndoaXRlIiksIA0KICAgIHBsb3QudGl0bGUgPSBlbGVtZW50X3RleHQoY29sb3IgPSAid2hpdGUiLCBoanVzdCA9IDAuNSwgZmFjZSA9ICJib2xkIiksICANCiAgICBsZWdlbmQuYmFja2dyb3VuZCA9IGVsZW1lbnRfcmVjdChmaWxsID0gImdyYXkyMCIsIGNvbG9yID0gImJsYWNrIiksIA0KICAgIGxlZ2VuZC50ZXh0ID0gZWxlbWVudF90ZXh0KGNvbG9yID0gIndoaXRlIiksIA0KICAgIGxlZ2VuZC50aXRsZSA9IGVsZW1lbnRfdGV4dChjb2xvciA9ICJ3aGl0ZSIpKQ0KDQpwbG90X2dlbmRlcmFtbnRfc3AgPC0gZ2dwbG90KG9ubGluZV9vcmRlcnMgJT4lIGZpbHRlcihQdXJjaGFzZV9DYXRlZ29yeSA9PSAiU3BvcnRzICYgT3V0ZG9vcnMiKSwgYWVzKHggPSBHZW5kZXIsIHkgPSBQdXJjaGFzZV9BbW91bnQsIGZpbGwgPSBHZW5kZXIpKSArDQogIGdlb21fY29sKCkgKw0KICBsYWJzKHRpdGxlID0gIkdlbmRlciBEaXN0cmlidXRpb24gb2YgU2FsZXMgaW4gU3BvcnRzICYgT3V0ZG9vcnMgUHVyY2hhc2VzIGJ5IFZvbHVtZSIsDQogICAgICAgeCA9ICJHZW5kZXIiLA0KICAgICAgIHkgPSAiVm9sdW1lIG9mIFB1cmNoYXNlcyIpICsNCiAgdGhlbWUoDQogICAgcGFuZWwuYmFja2dyb3VuZCA9IGVsZW1lbnRfcmVjdChmaWxsID0gImdyYXkyMCIsIGNvbG9yID0gImJsYWNrIiksIA0KICAgIHBsb3QuYmFja2dyb3VuZCA9IGVsZW1lbnRfcmVjdChmaWxsID0gImdyYXkyMCIpLCANCiAgICBwYW5lbC5ncmlkLm1ham9yID0gZWxlbWVudF9saW5lKGNvbG9yID0gIndoaXRlIiwgbGluZXR5cGUgPSAiZGFzaGVkIiksICANCiAgICBwYW5lbC5ncmlkLm1pbm9yID0gZWxlbWVudF9saW5lKGNvbG9yID0gIndoaXRlIiwgbGluZXR5cGUgPSAiZGFzaGVkIiksICANCiAgICBheGlzLnRleHQgPSBlbGVtZW50X3RleHQoY29sb3IgPSAid2hpdGUiKSwgIA0KICAgIGF4aXMudGl0bGUgPSBlbGVtZW50X3RleHQoY29sb3IgPSAid2hpdGUiKSwgDQogICAgcGxvdC50aXRsZSA9IGVsZW1lbnRfdGV4dChjb2xvciA9ICJ3aGl0ZSIsIGhqdXN0ID0gMC41LCBmYWNlID0gImJvbGQiKSwgIA0KICAgIGxlZ2VuZC5iYWNrZ3JvdW5kID0gZWxlbWVudF9yZWN0KGZpbGwgPSAiZ3JheTIwIiwgY29sb3IgPSAiYmxhY2siKSwgDQogICAgbGVnZW5kLnRleHQgPSBlbGVtZW50X3RleHQoY29sb3IgPSAid2hpdGUiKSwgDQogICAgbGVnZW5kLnRpdGxlID0gZWxlbWVudF90ZXh0KGNvbG9yID0gIndoaXRlIikpDQoNCnBsb3RfZ2VuZGVyZGlzX3NwDQpwbG90X2dlbmRlcmFtbnRfc3ANCmBgYA0KDQpXZSBjYW4gY2xlYXJseSBzZWUgdGhhdCB3b21lbiBtYWtlIGEgbGFyZ2UgbnVtYmVyIG9mIHB1cmNoYXNlcyBhbmQgaGF2ZSB0aGUgaGlnaGVzdCBwdXJjaGFzZSB2b2x1bWUuIEhvd2V2ZXIsIG1lbiBtYWtlIGZld2VyIHB1cmNoYXNlcywgYnV0IGl0IHNlZW1zIHRoZWlyIGF2ZXJhZ2UgcHVyY2hhc2UgYW1vdW50cyBhcmUgaGlnaGVyLiBXZSB3aWxsIGJhbGFuY2UgdGhlIGRhdGFzZXQgYnkgdGFraW5nIGFuIGVxdWFsIG51bWJlciBvZiBtZW4gYW5kIHdvbWVuIHRvIGV2YWx1YXRlIGlmIHRoZSBwdXJjaGFzZSB2b2x1bWUgaXMgc3RpbGwgaGlnaGVyIGFtb25nIHdvbWVuLg0KDQpgYGB7cn0NCm9ubGluZV9vcmRlcnNfZmlsdGVyZWQgPC0gb25saW5lX29yZGVycyAlPiUNCiAgZmlsdGVyKEdlbmRlciA9PSBjKCJNYWxlIiwiRmVtYWxlIikpDQoNCiMgUmVzdW1pciBsb3MgbW9udG9zIGRlIGNvbXByYSBwb3IgZ8OpbmVybw0KZ2VuZGVyX3N1bW1hcnkgPC0gb25saW5lX29yZGVyc19maWx0ZXJlZCAlPiUNCiAgZ3JvdXBfYnkoR2VuZGVyKSAlPiUNCiAgc3VtbWFyaXNlKEF2ZXJhZ2VfUHVyY2hhc2VfQW1vdW50ID0gbWVhbihQdXJjaGFzZV9BbW91bnQsIG5hLnJtID0gVFJVRSksDQogICAgICAgICAgICBUb3RhbF9QdXJjaGFzZV9BbW91bnQgPSBzdW0oUHVyY2hhc2VfQW1vdW50LCBuYS5ybSA9IFRSVUUpLA0KICAgICAgICAgICAgUHVyY2hhc2VfQ291bnQgPSBuKCkpDQoNCiMgTW9zdHJhciByZXN1bWVuDQpwcmludChnZW5kZXJfc3VtbWFyeSkNCmBgYA0KDQoNCmBgYHtyfQ0KIyBSZWFsaXphciB1bmEgcHJ1ZWJhIHQgcGFyYSBjb21wYXJhciBsb3MgbW9udG9zIHByb21lZGlvIGRlIGNvbXByYSBlbnRyZSBob21icmVzIHkgbXVqZXJlcw0KdF90ZXN0X3Jlc3VsdCA8LSB0LnRlc3QoUHVyY2hhc2VfQW1vdW50IH4gR2VuZGVyLCBkYXRhID0gb25saW5lX29yZGVyc19maWx0ZXJlZCkNCg0KIyBWZXIgbG9zIHJlc3VsdGFkb3MgZGUgbGEgcHJ1ZWJhIHQNCnByaW50KHRfdGVzdF9yZXN1bHQpDQpgYGANCg0KDQpgYGB7cn0NCiMgVmlzdWFsaXphciBsYSBkaXN0cmlidWNpw7NuIGRlIGxvcyBtb250b3MgZGUgY29tcHJhIHBhcmEgaG9tYnJlcyB5IG11amVyZXMNCmdncGxvdChvbmxpbmVfb3JkZXJzX2ZpbHRlcmVkLCBhZXMoeCA9IEdlbmRlciwgeSA9IFB1cmNoYXNlX0Ftb3VudCwgY29sb3IgPSBHZW5kZXIpKSArDQogIGdlb21fYm94cGxvdCgpICsNCiAgbGFicyh0aXRsZSA9ICJEaXN0cmlidWNpw7NuIGRlIGxvcyBNb250b3MgZGUgQ29tcHJhIHBvciBHw6luZXJvIiwNCiAgICAgICB4ID0gIkfDqW5lcm8iLA0KICAgICAgIHkgPSAiTW9udG8gZGUgQ29tcHJhIikgICsNCiAgdGhlbWUoDQogICAgcGFuZWwuYmFja2dyb3VuZCA9IGVsZW1lbnRfcmVjdChmaWxsID0gImdyYXkyMCIsIGNvbG9yID0gImJsYWNrIiksIA0KICAgIHBsb3QuYmFja2dyb3VuZCA9IGVsZW1lbnRfcmVjdChmaWxsID0gImdyYXkyMCIpLCANCiAgICBwYW5lbC5ncmlkLm1ham9yID0gZWxlbWVudF9saW5lKGNvbG9yID0gIndoaXRlIiwgbGluZXR5cGUgPSAiZGFzaGVkIiksICANCiAgICBwYW5lbC5ncmlkLm1pbm9yID0gZWxlbWVudF9saW5lKGNvbG9yID0gIndoaXRlIiwgbGluZXR5cGUgPSAiZGFzaGVkIiksICANCiAgICBheGlzLnRleHQgPSBlbGVtZW50X3RleHQoY29sb3IgPSAid2hpdGUiKSwgIA0KICAgIGF4aXMudGl0bGUgPSBlbGVtZW50X3RleHQoY29sb3IgPSAid2hpdGUiKSwgDQogICAgcGxvdC50aXRsZSA9IGVsZW1lbnRfdGV4dChjb2xvciA9ICJ3aGl0ZSIsIGhqdXN0ID0gMC41LCBmYWNlID0gImJvbGQiKSwgIA0KICAgIGxlZ2VuZC5iYWNrZ3JvdW5kID0gZWxlbWVudF9yZWN0KGZpbGwgPSAiZ3JheTIwIiwgY29sb3IgPSAiYmxhY2siKSwgDQogICAgbGVnZW5kLnRleHQgPSBlbGVtZW50X3RleHQoY29sb3IgPSAid2hpdGUiKSwgDQogICAgbGVnZW5kLnRpdGxlID0gZWxlbWVudF90ZXh0KGNvbG9yID0gIndoaXRlIikpDQpgYGANCg0KV2l0aCB0aGUgcmVzdWx0cyBmcm9tIHRoZSB0LXRlc3QgYW5kIHRoZSBib3ggcGxvdCwgd2UgY2FuIHNlZSB0aGF0IHRoZSBkaWZmZXJlbmNlIGJldHdlZW4gdGhlc2UgdHdvIGdlbmRlcnMgaXMgbm90IHNpZ25pZmljYW50LiBUaGVyZWZvcmUsIGZvY3VzaW5nIHRoZSBjYW1wYWlnbiBleGNsdXNpdmVseSBvbiBtZW4gb3Igd29tZW4gd291bGQgbm90IGxlYWQgdG8gYSBzaWduaWZpY2FudCBkaWZmZXJlbmNlIGNvbXBhcmVkIHRvIHRoZSBvdGhlciBnZW5kZXJzLCB3aGljaCBoYXZlIGEgbXVjaCBsb3dlciBwdXJjaGFzZSB2b2x1bWUuDQoNClRoZSB0LXRlc3QgcmVzdWx0IHNob3dzIGEgdC12YWx1ZSBvZiAtMC42NTgyOCB3aXRoIGEgcC12YWx1ZSBvZiAwLjUxMTQsIGluZGljYXRpbmcgdGhhdCB0aGVyZSBpcyBubyBzdGF0aXN0aWNhbGx5IHNpZ25pZmljYW50IGRpZmZlcmVuY2UgYmV0d2VlbiB0aGUgbWVhbiBwdXJjaGFzZSBhbW91bnRzIGZvciB3b21lbiAoMjYxLjYzKSBhbmQgbWVuICgyNzUuNTApLiBUaGUgOTUlIGNvbmZpZGVuY2UgaW50ZXJ2YWwgZm9yIHRoZSBkaWZmZXJlbmNlIGluIG1lYW5zIHJhbmdlcyBmcm9tIC01NS41MSB0byAyNy43Nywgd2hpY2ggaW5jbHVkZXMgMCwgZnVydGhlciBjb25maXJtaW5nIHRoYXQgdGhlIGRpZmZlcmVuY2UgaXMgbm90IHN0YXRpc3RpY2FsbHkgc2lnbmlmaWNhbnQuDQoNCk5vdyBsZXQncyBmaWd1cmUgb3V0IGlmIHRoZXJlJ3MgYW4gaW1wYWN0IGZvciB0aGUgcHVyY2hhc2UgYW1vdW50IGlmIHdlIGNvbnNpZGVyIHRoZSBhZ2UuIA0KDQpgYGB7cn0NCnBsb3RfYWdlZGlzX3NwIDwtIGdncGxvdChvbmxpbmVfb3JkZXJzICU+JSBmaWx0ZXIoUHVyY2hhc2VfQ2F0ZWdvcnkgPT0gIlNwb3J0cyAmIE91dGRvb3JzIiksIGFlcyh4ID0gQWdlKSkgKw0KICBnZW9tX2hpc3RvZ3JhbShiaW53aWR0aCA9IDUsIGZpbGwgPSAiTGlnaHQgR3JlZW4iLCBjb2xvciA9ICJCbGFjayIpICsNCiAgc2NhbGVfeF9jb250aW51b3VzKGJyZWFrcyA9IHNlcSgwLCBtYXgob25saW5lX29yZGVycyRBZ2UpLCBieSA9IDUpLCANCiAgICAgICAgICAgICAgICAgICAgIGxhYmVscyA9IHNlcSgwLCBtYXgob25saW5lX29yZGVycyRBZ2UpLCBieSA9IDUpKSArDQogIGxhYnModGl0bGUgPSAiQWdlIERpc3RyaWJ1dGlvbiBvZiBTcG9ydHMgJiBPdXRkb29ycyBDdXN0b21lcnMiLA0KICAgICAgIHggPSAiQWdlIiwNCiAgICAgICB5ID0gIk51bWJlciBvZiBQdXJjaGFzZXMiKSArDQogIHRoZW1lKA0KICAgIHBhbmVsLmJhY2tncm91bmQgPSBlbGVtZW50X3JlY3QoZmlsbCA9ICJncmF5MjAiLCBjb2xvciA9ICJibGFjayIpLCANCiAgICBwbG90LmJhY2tncm91bmQgPSBlbGVtZW50X3JlY3QoZmlsbCA9ICJncmF5MjAiKSwgDQogICAgcGFuZWwuZ3JpZC5tYWpvciA9IGVsZW1lbnRfbGluZShjb2xvciA9ICJ3aGl0ZSIsIGxpbmV0eXBlID0gImRhc2hlZCIpLCAgDQogICAgcGFuZWwuZ3JpZC5taW5vciA9IGVsZW1lbnRfbGluZShjb2xvciA9ICJ3aGl0ZSIsIGxpbmV0eXBlID0gImRhc2hlZCIpLCAgDQogICAgYXhpcy50ZXh0ID0gZWxlbWVudF90ZXh0KGNvbG9yID0gIndoaXRlIiksICANCiAgICBheGlzLnRpdGxlID0gZWxlbWVudF90ZXh0KGNvbG9yID0gIndoaXRlIiksIA0KICAgIHBsb3QudGl0bGUgPSBlbGVtZW50X3RleHQoY29sb3IgPSAid2hpdGUiLCBoanVzdCA9IDAuNSwgZmFjZSA9ICJib2xkIiksICANCiAgICBsZWdlbmQuYmFja2dyb3VuZCA9IGVsZW1lbnRfcmVjdChmaWxsID0gImdyYXkyMCIsIGNvbG9yID0gImJsYWNrIiksIA0KICAgIGxlZ2VuZC50ZXh0ID0gZWxlbWVudF90ZXh0KGNvbG9yID0gIndoaXRlIiksIA0KICAgIGxlZ2VuZC50aXRsZSA9IGVsZW1lbnRfdGV4dChjb2xvciA9ICJ3aGl0ZSIpKQ0KDQpwbG90X2FnZWRpc19zcA0KYGBgDQoNCkFzIHdlIGNhbiBzZWUsIG1vc3Qgb2YgdGhlIHNhbGVzIGFyZSBmb2N1c2VkIG9uIHRoZSBhZ2UgcmFuZ2Ugb2YgMjAgdG8gMzAgeWVhcnMsIHNvIHdlIGNhbiB0YXJnZXQgdGhlIGFkcyB0byB0aGlzIGF1ZGllbmNlLCBleHBlY3RpbmcgdGhlIGNhbXBhaWduIHRvIGhhdmUgYSBoaWdoZXIgY29udmVyc2lvbiByYXRlIGFuZCB0aGUgcHJvZml0cyBmcm9tIGl0IHRvIGJlIGdyZWF0ZXIuIE5vdyBsZXRzIGNoZWNrIGlmIHRoZSBpbmNvbWUgbGV2ZWwgaGFzIGFueSBpbmZsdWVuY2Ugb24gdGhlIHB1cmNoYXNlcy4NCg0KYGBge3J9DQpwbG90X2luY29tZV9zcCA8LSBnZ3Bsb3Qob25saW5lX29yZGVycyAlPiUgZmlsdGVyKFB1cmNoYXNlX0NhdGVnb3J5ID09ICJTcG9ydHMgJiBPdXRkb29ycyIpLCBhZXMoeCA9IEluY29tZV9MZXZlbCwgeSA9IFB1cmNoYXNlX0Ftb3VudCwgZmlsbCA9IEluY29tZV9MZXZlbCkpICsNCiAgZ2VvbV9iYXIoc3RhdCA9ICJpZGVudGl0eSIpICsNCiAgbGFicyh0aXRsZSA9ICJJbmNvbWUgTGV2ZWwgdnMgUHVyY2hhc2UgQW1vdW50IGZvciBTcG9ydHMgJiBPdXRkb29ycyIsDQogICAgICAgeCA9ICJJbmNvbWUgTGV2ZWwiLA0KICAgICAgIHkgPSAiVG90YWwgUHVyY2hhc2UgQW1vdW50IikgKw0KICB0aGVtZSgNCiAgICBwYW5lbC5iYWNrZ3JvdW5kID0gZWxlbWVudF9yZWN0KGZpbGwgPSAiZ3JheTIwIiwgY29sb3IgPSAiYmxhY2siKSwgDQogICAgcGxvdC5iYWNrZ3JvdW5kID0gZWxlbWVudF9yZWN0KGZpbGwgPSAiZ3JheTIwIiksIA0KICAgIHBhbmVsLmdyaWQubWFqb3IgPSBlbGVtZW50X2xpbmUoY29sb3IgPSAid2hpdGUiLCBsaW5ldHlwZSA9ICJkYXNoZWQiKSwgIA0KICAgIHBhbmVsLmdyaWQubWlub3IgPSBlbGVtZW50X2xpbmUoY29sb3IgPSAid2hpdGUiLCBsaW5ldHlwZSA9ICJkYXNoZWQiKSwgIA0KICAgIGF4aXMudGV4dCA9IGVsZW1lbnRfdGV4dChjb2xvciA9ICJ3aGl0ZSIpLCAgDQogICAgYXhpcy50aXRsZSA9IGVsZW1lbnRfdGV4dChjb2xvciA9ICJ3aGl0ZSIpLCANCiAgICBwbG90LnRpdGxlID0gZWxlbWVudF90ZXh0KGNvbG9yID0gIndoaXRlIiwgaGp1c3QgPSAwLjUsIGZhY2UgPSAiYm9sZCIpLCAgDQogICAgbGVnZW5kLmJhY2tncm91bmQgPSBlbGVtZW50X3JlY3QoZmlsbCA9ICJncmF5MjAiLCBjb2xvciA9ICJibGFjayIpLCANCiAgICBsZWdlbmQudGV4dCA9IGVsZW1lbnRfdGV4dChjb2xvciA9ICJ3aGl0ZSIpLCANCiAgICBsZWdlbmQudGl0bGUgPSBlbGVtZW50X3RleHQoY29sb3IgPSAid2hpdGUiKSAgDQogICkNCg0KcGxvdF9pbmNvbWVfc3ANCmBgYA0KDQpBcyBleHBlY3RlZCwgdGhlIGdyb3VwIHdpdGggaGlnaGVyIGluY29tZSBoYXMgaGFkIGEgaGlnaGVyIHB1cmNoYXNlIGxldmVsIGNvbXBhcmVkIHRvIHRoZSBtaWRkbGUtaW5jb21lIGdyb3VwLiBUaGVyZWZvcmUsIHdlIGNhbiBmb2N1cyBhIGNhbXBhaWduIG9uIHJlbGF0aXZlbHkgaGlnaC1wcmljZWQgcHJvZHVjdHMgYW5kIHRlc3Qgd2hldGhlciB3ZSBjYW4gc2VsbCBwcm9kdWN0cyB0aGF0IGxlYWQgdG8gYSBoaWdoZXIgcHVyY2hhc2UgdGlja2V0Lg0KDQpOb3cgbGV0cyBjaGVjaywgZG8gY3VzdG9tZXIgYXJlIGluZmx1ZW5jZWQgYnkgZGlzY291bnRzLCBsZXQncyBzZWUgaWYgdGhpcyBoYXBwZW5zIGV2YWx1YXRpbmcgdGhlIERpc2NvdW50IHNlbnNpdGl2aXR5IHZhcmlhYmxlOg0KDQpgYGB7cn0NCnBsb3RfaW5jb21lX3NwIDwtIGdncGxvdChvbmxpbmVfb3JkZXJzICU+JSBmaWx0ZXIoUHVyY2hhc2VfQ2F0ZWdvcnkgPT0gIlNwb3J0cyAmIE91dGRvb3JzIiksIGFlcyh4ID0gRGlzY291bnRfU2Vuc2l0aXZpdHksIHkgPSBQdXJjaGFzZV9BbW91bnQsIGZpbGwgPSBEaXNjb3VudF9TZW5zaXRpdml0eSkpICsNCiAgZ2VvbV9iYXIoc3RhdCA9ICJpZGVudGl0eSIpICsNCiAgbGFicyh0aXRsZSA9ICJEaXNjb3VudCBTZW5zaXRpdml0eSB2cyBQdXJjaGFzZSBBbW91bnQgZm9yIFNwb3J0cyAmIE91dGRvb3JzIiwNCiAgICAgICB4ID0gIkRpc2NvdW50IFNlbnNpdGl2aXR5IiwNCiAgICAgICB5ID0gIlRvdGFsIFB1cmNoYXNlIEFtb3VudCIpICsNCiAgdGhlbWUoDQogICAgcGFuZWwuYmFja2dyb3VuZCA9IGVsZW1lbnRfcmVjdChmaWxsID0gImdyYXkyMCIsIGNvbG9yID0gImJsYWNrIiksIA0KICAgIHBsb3QuYmFja2dyb3VuZCA9IGVsZW1lbnRfcmVjdChmaWxsID0gImdyYXkyMCIpLCANCiAgICBwYW5lbC5ncmlkLm1ham9yID0gZWxlbWVudF9saW5lKGNvbG9yID0gIndoaXRlIiwgbGluZXR5cGUgPSAiZGFzaGVkIiksICANCiAgICBwYW5lbC5ncmlkLm1pbm9yID0gZWxlbWVudF9saW5lKGNvbG9yID0gIndoaXRlIiwgbGluZXR5cGUgPSAiZGFzaGVkIiksICANCiAgICBheGlzLnRleHQgPSBlbGVtZW50X3RleHQoY29sb3IgPSAid2hpdGUiKSwgIA0KICAgIGF4aXMudGl0bGUgPSBlbGVtZW50X3RleHQoY29sb3IgPSAid2hpdGUiKSwgDQogICAgcGxvdC50aXRsZSA9IGVsZW1lbnRfdGV4dChjb2xvciA9ICJ3aGl0ZSIsIGhqdXN0ID0gMC41LCBmYWNlID0gImJvbGQiKSwgIA0KICAgIGxlZ2VuZC5iYWNrZ3JvdW5kID0gZWxlbWVudF9yZWN0KGZpbGwgPSAiZ3JheTIwIiwgY29sb3IgPSAiYmxhY2siKSwgDQogICAgbGVnZW5kLnRleHQgPSBlbGVtZW50X3RleHQoY29sb3IgPSAid2hpdGUiKSwgDQogICAgbGVnZW5kLnRpdGxlID0gZWxlbWVudF90ZXh0KGNvbG9yID0gIndoaXRlIikgIA0KICApDQoNCnBsb3RfaW5jb21lX3NwDQpgYGANCg0KQXMgY2FuIGJlIHNlZW4gaW4gdGhlIGdyYXBoLCBtb3N0IGN1c3RvbWVycyBhcmUgc2Vuc2l0aXZlIHRvIGRpc2NvdW50cy4gSG93ZXZlciwgd2UgY2Fubm90IGNvbmZpcm0gdGhhdCB0aGV5IGFjdHVhbGx5IHVzZSB0aGVtLiBMZXQncyBjaGVjayBpZiB0aGF0J3MgdGhlIGNhc2UuDQoNCmBgYHtyfQ0KZ2dwbG90KG9ubGluZV9vcmRlcnMsIGFlcyh4ID0gRGlzY291bnRfU2Vuc2l0aXZpdHksIGZpbGwgPSBEaXNjb3VudF9Vc2VkKSkgKw0KICBnZW9tX2Jhcihwb3NpdGlvbiA9ICJzdGFjayIpICsgICMgQXBpbGFyIGxhcyBiYXJyYXMNCiAgbGFicyh0aXRsZSA9ICJEaXN0cmlidWNpw7NuIGRlbCBVc28gZGVsIERlc2N1ZW50byBwb3IgU2Vuc2liaWxpZGFkIGFsIERlc2N1ZW50byIsDQogICAgICAgeCA9ICJTZW5zaWJpbGlkYWQgYWwgRGVzY3VlbnRvIiwNCiAgICAgICB5ID0gIk7Dum1lcm8gZGUgQ29tcHJhcyIpICsNCiAgc2NhbGVfZmlsbF9tYW51YWwodmFsdWVzID0gYygiZ3JheSIsICJkYXJrZ3JlZW4iKSkgKyAgIyBPcGNpb25hbDogcGVyc29uYWxpemFyIGxvcyBjb2xvcmVzDQogIHRoZW1lX21pbmltYWwoKSArDQogIHRoZW1lKA0KICAgIHBhbmVsLmJhY2tncm91bmQgPSBlbGVtZW50X3JlY3QoZmlsbCA9ICJncmF5MjAiLCBjb2xvciA9ICJibGFjayIpLCANCiAgICBwbG90LmJhY2tncm91bmQgPSBlbGVtZW50X3JlY3QoZmlsbCA9ICJncmF5MjAiKSwgDQogICAgcGFuZWwuZ3JpZC5tYWpvciA9IGVsZW1lbnRfbGluZShjb2xvciA9ICJ3aGl0ZSIsIGxpbmV0eXBlID0gImRhc2hlZCIpLCAgDQogICAgcGFuZWwuZ3JpZC5taW5vciA9IGVsZW1lbnRfbGluZShjb2xvciA9ICJ3aGl0ZSIsIGxpbmV0eXBlID0gImRhc2hlZCIpLCAgDQogICAgYXhpcy50ZXh0ID0gZWxlbWVudF90ZXh0KGNvbG9yID0gIndoaXRlIiksICANCiAgICBheGlzLnRpdGxlID0gZWxlbWVudF90ZXh0KGNvbG9yID0gIndoaXRlIiksIA0KICAgIHBsb3QudGl0bGUgPSBlbGVtZW50X3RleHQoY29sb3IgPSAid2hpdGUiLCBoanVzdCA9IDAuNSwgZmFjZSA9ICJib2xkIiksICANCiAgICBsZWdlbmQuYmFja2dyb3VuZCA9IGVsZW1lbnRfcmVjdChmaWxsID0gImdyYXkyMCIsIGNvbG9yID0gImJsYWNrIiksIA0KICAgIGxlZ2VuZC50ZXh0ID0gZWxlbWVudF90ZXh0KGNvbG9yID0gIndoaXRlIiksIA0KICAgIGxlZ2VuZC50aXRsZSA9IGVsZW1lbnRfdGV4dChjb2xvciA9ICJ3aGl0ZSIpICANCiAgKQ0KYGBgDQoNCg0KSXQgc2VlbXMgdGhhdCBvbmx5IGN1c3RvbWVycyB3aXRoIGEgaGlnaCBzZW5zaXRpdml0eSB0byBkaXNjb3VudHMgbWFrZSBjb25zaWRlcmFibGUgdXNlIG9mIHRoZW0uIFRoaXMgY291bGQgbWVhbiB0aGF0IHRoZSBzdG9yZeKAmXMgZGlzY291bnRzIGFyZSBhdHRyYWN0aXZlLCBidXQgdGhleSBhcmUgbm90IHVzZWQgYXMgbXVjaCBhcyBleHBlY3RlZCBieSBjdXN0b21lcnMuDQoNClRvIGNvbmNsdWRlLCBpdCB3b3VsZCBiZSB2ZXJ5IHVzZWZ1bCB0byBldmFsdWF0ZSBpZiB0aGVyZSBpcyBhbnkgc2Vhc29uYWwgdHJlbmQgb3IgcGVhayBpbiBzYWxlcy4gVGhpcyB3YXksIHdlIGNhbiBkZWZpbmUgdHdvIGtleSBhc3BlY3RzOiANCg0KICAxLiBJZiB3ZSBjYW4gdGFrZSBhZHZhbnRhZ2Ugb2YgYSBub3JtYWwgc2FsZXMgaW5jcmVhc2UgYnkgZnVydGhlciBib29zdGluZyBpdCB3aXRoIGFkcyB0YXJnZXRlZCBhdCBhIHByb2ZpdGFibGUgYXVkaWVuY2UuDQogIDIuIFRvIGVuc3VyZSB0aGF0IGlmIHRoZXJlIGlzIGFuIGluY3JlYXNlIGluIHNhbGVzIHdoZW4gdGhlIGNhbXBhaWduIGlzIGxhdW5jaGVkLCBpdCBpcyBkdWUgdG8gdGhlIGNhbXBhaWduIGl0c2VsZiBhbmQgbm90IGp1c3QgdGhlIG5vcm1hbCBzZWFzb25hbCBpbmNyZWFzZSBpbiBzYWxlcy4NCg0KYGBge3J9DQpvbmxpbmVfb3JkZXJzIDwtIG9ubGluZV9vcmRlcnMgJT4lDQogIG11dGF0ZShNb250aCA9IGZsb29yX2RhdGUoVGltZV9vZl9QdXJjaGFzZSwgIm1vbnRoIikpDQoNCm1vbnRobHlfc2FsZXMgPC0gb25saW5lX29yZGVycyAlPiUNCiAgZ3JvdXBfYnkoTW9udGgpICU+JQ0KICBzdW1tYXJpc2UoVG90YWxfUHVyY2hhc2VfQW1vdW50ID0gc3VtKFB1cmNoYXNlX0Ftb3VudCwgbmEucm0gPSBUUlVFKSkNCg0KZ2dwbG90KG1vbnRobHlfc2FsZXMsIGFlcyh4ID0gTW9udGgsIHkgPSBUb3RhbF9QdXJjaGFzZV9BbW91bnQpKSArDQogIGdlb21fbGluZShjb2xvciA9ICJ3aGl0ZSIsIGxpbmV3aWR0aCA9IDEpICsgDQogIGdlb21fcG9pbnQoY29sb3IgPSAicmVkIiwgc2l6ZSA9IDQpICsNCiAgbGFicyh0aXRsZSA9ICJUZW5kZW5jaWEgZGUgQ29tcHJhcyBhIGxvIExhcmdvIGRlbCBUaWVtcG8iLA0KICAgICAgIHggPSAiRmVjaGEgKE1lcykiLA0KICAgICAgIHkgPSAiTW9udG8gVG90YWwgZGUgQ29tcHJhcyIpICsNCiAgdGhlbWUoDQogICAgcGFuZWwuYmFja2dyb3VuZCA9IGVsZW1lbnRfcmVjdChmaWxsID0gImdyYXkyMCIsIGNvbG9yID0gImJsYWNrIiksIA0KICAgIHBsb3QuYmFja2dyb3VuZCA9IGVsZW1lbnRfcmVjdChmaWxsID0gImdyYXkyMCIpLCANCiAgICBwYW5lbC5ncmlkLm1ham9yID0gZWxlbWVudF9saW5lKGNvbG9yID0gIndoaXRlIiwgbGluZXR5cGUgPSAiZGFzaGVkIiksICANCiAgICBwYW5lbC5ncmlkLm1pbm9yID0gZWxlbWVudF9saW5lKGNvbG9yID0gIndoaXRlIiwgbGluZXR5cGUgPSAiZGFzaGVkIiksICANCiAgICBheGlzLnRleHQgPSBlbGVtZW50X3RleHQoY29sb3IgPSAid2hpdGUiKSwgIA0KICAgIGF4aXMudGl0bGUgPSBlbGVtZW50X3RleHQoY29sb3IgPSAid2hpdGUiKSwgDQogICAgcGxvdC50aXRsZSA9IGVsZW1lbnRfdGV4dChjb2xvciA9ICJ3aGl0ZSIsIGhqdXN0ID0gMC41LCBmYWNlID0gImJvbGQiKSwgIA0KICAgIGxlZ2VuZC5iYWNrZ3JvdW5kID0gZWxlbWVudF9yZWN0KGZpbGwgPSAiZ3JheTIwIiwgY29sb3IgPSAiYmxhY2siKSwgDQogICAgbGVnZW5kLnRleHQgPSBlbGVtZW50X3RleHQoY29sb3IgPSAid2hpdGUiKSwgDQogICAgbGVnZW5kLnRpdGxlID0gZWxlbWVudF90ZXh0KGNvbG9yID0gIndoaXRlIikgIA0KICApDQpgYGANCg0KQXMgd2UgY2FuIHNlZSBpbiB0aGUgdGltZSBncmFwaCwgc3RhcnRpbmcgZnJvbSBNYXJjaCBhbmQgQXByaWwsIHRoZXJlIGlzIGEgbmF0dXJhbCBpbmNyZWFzZSBpbiBzYWxlcyBpbiB0aGUgb25saW5lIHN0b3JlLiBUaGlzIGNvdWxkIGJlIGR1ZSB0byB0aGUgc2Vhc29uLCBhbmQgaXQgd2lsbCBiZSBhIGtleSBwb2ludCBpbiB0aGUgYW5hbHlzaXMgd2hlbiBjb21wYXJpbmcgdGhlIGJlbmVmaXRzIGdlbmVyYXRlZCBieSB0aGUgY2FtcGFpZ24sIHNpbmNlIHNhbGVzIHdpbGwgaW5jcmVhc2UgcmVnYXJkbGVzcy4NCg0KIyMgQ29uY2x1c3Npb25zDQoNCg0K</div>
+   
+              </div>
+  </div>
+  </div>
+  </div>
+   
+      
+
+  <script>
+    $(document).ready(function () {
+
+		// add bootstrap table styles to pandoc tables
+	$('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+		
+ 		
+	    });
+  </script>
+
+
+
+    <!-- dynamically load mathjax for compatibility with self-contained -->
+  <script>
+    (function () {
+	var script = document.createElement("script");
+	script.type = "text/javascript";
+	script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+	document.getElementsByTagName("head")[0].appendChild(script);
+    })();
+  </script>
+  
+</body>
+</html>
